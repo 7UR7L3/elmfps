@@ -1,0 +1,43 @@
+var _elm_community$webgl$WebGL_Texture$size = _elm_community$webgl$Native_Texture.size;
+var _elm_community$webgl$WebGL_Texture$loadWith = F2(
+	function (_p0, url) {
+		var _p1 = _p0;
+		var expand = F4(
+			function (_p5, _p4, _p3, _p2) {
+				var _p6 = _p5;
+				var _p7 = _p4;
+				var _p8 = _p3;
+				var _p9 = _p2;
+				return A6(_elm_community$webgl$Native_Texture.load, _p6._0, _p7._0, _p8._0, _p9._0, _p1.flipY, url);
+			});
+		return A4(expand, _p1.magnify, _p1.minify, _p1.horizontalWrap, _p1.verticalWrap);
+	});
+var _elm_community$webgl$WebGL_Texture$Options = F5(
+	function (a, b, c, d, e) {
+		return {magnify: a, minify: b, horizontalWrap: c, verticalWrap: d, flipY: e};
+	});
+var _elm_community$webgl$WebGL_Texture$SizeError = F2(
+	function (a, b) {
+		return {ctor: 'SizeError', _0: a, _1: b};
+	});
+var _elm_community$webgl$WebGL_Texture$LoadError = {ctor: 'LoadError'};
+var _elm_community$webgl$WebGL_Texture$Resize = function (a) {
+	return {ctor: 'Resize', _0: a};
+};
+var _elm_community$webgl$WebGL_Texture$linear = _elm_community$webgl$WebGL_Texture$Resize(9729);
+var _elm_community$webgl$WebGL_Texture$nearest = _elm_community$webgl$WebGL_Texture$Resize(9728);
+var _elm_community$webgl$WebGL_Texture$nearestMipmapNearest = _elm_community$webgl$WebGL_Texture$Resize(9984);
+var _elm_community$webgl$WebGL_Texture$linearMipmapNearest = _elm_community$webgl$WebGL_Texture$Resize(9985);
+var _elm_community$webgl$WebGL_Texture$nearestMipmapLinear = _elm_community$webgl$WebGL_Texture$Resize(9986);
+var _elm_community$webgl$WebGL_Texture$linearMipmapLinear = _elm_community$webgl$WebGL_Texture$Resize(9987);
+var _elm_community$webgl$WebGL_Texture$Bigger = {ctor: 'Bigger'};
+var _elm_community$webgl$WebGL_Texture$Smaller = {ctor: 'Smaller'};
+var _elm_community$webgl$WebGL_Texture$Wrap = function (a) {
+	return {ctor: 'Wrap', _0: a};
+};
+var _elm_community$webgl$WebGL_Texture$repeat = _elm_community$webgl$WebGL_Texture$Wrap(10497);
+var _elm_community$webgl$WebGL_Texture$defaultOptions = {magnify: _elm_community$webgl$WebGL_Texture$linear, minify: _elm_community$webgl$WebGL_Texture$nearestMipmapLinear, horizontalWrap: _elm_community$webgl$WebGL_Texture$repeat, verticalWrap: _elm_community$webgl$WebGL_Texture$repeat, flipY: true};
+var _elm_community$webgl$WebGL_Texture$load = _elm_community$webgl$WebGL_Texture$loadWith(_elm_community$webgl$WebGL_Texture$defaultOptions);
+var _elm_community$webgl$WebGL_Texture$clampToEdge = _elm_community$webgl$WebGL_Texture$Wrap(33071);
+var _elm_community$webgl$WebGL_Texture$nonPowerOfTwoOptions = {magnify: _elm_community$webgl$WebGL_Texture$linear, minify: _elm_community$webgl$WebGL_Texture$nearest, horizontalWrap: _elm_community$webgl$WebGL_Texture$clampToEdge, verticalWrap: _elm_community$webgl$WebGL_Texture$clampToEdge, flipY: true};
+var _elm_community$webgl$WebGL_Texture$mirroredRepeat = _elm_community$webgl$WebGL_Texture$Wrap(33648);

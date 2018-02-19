@@ -1,0 +1,68 @@
+var _elm_community$webgl$WebGL_Settings_Internal$SampleAlphaToCoverage = {ctor: 'SampleAlphaToCoverage'};
+var _elm_community$webgl$WebGL_Settings_Internal$SampleCoverage = F2(
+	function (a, b) {
+		return {ctor: 'SampleCoverage', _0: a, _1: b};
+	});
+var _elm_community$webgl$WebGL_Settings_Internal$PolygonOffset = F2(
+	function (a, b) {
+		return {ctor: 'PolygonOffset', _0: a, _1: b};
+	});
+var _elm_community$webgl$WebGL_Settings_Internal$CullFace = function (a) {
+	return {ctor: 'CullFace', _0: a};
+};
+var _elm_community$webgl$WebGL_Settings_Internal$ColorMask = F4(
+	function (a, b, c, d) {
+		return {ctor: 'ColorMask', _0: a, _1: b, _2: c, _3: d};
+	});
+var _elm_community$webgl$WebGL_Settings_Internal$Scissor = F4(
+	function (a, b, c, d) {
+		return {ctor: 'Scissor', _0: a, _1: b, _2: c, _3: d};
+	});
+var _elm_community$webgl$WebGL_Settings_Internal$StencilTest = function (a) {
+	return function (b) {
+		return function (c) {
+			return function (d) {
+				return function (e) {
+					return function (f) {
+						return function (g) {
+							return function (h) {
+								return function (i) {
+									return function (j) {
+										return function (k) {
+											return {ctor: 'StencilTest', _0: a, _1: b, _2: c, _3: d, _4: e, _5: f, _6: g, _7: h, _8: i, _9: j, _10: k};
+										};
+									};
+								};
+							};
+						};
+					};
+				};
+			};
+		};
+	};
+};
+var _elm_community$webgl$WebGL_Settings_Internal$DepthTest = F4(
+	function (a, b, c, d) {
+		return {ctor: 'DepthTest', _0: a, _1: b, _2: c, _3: d};
+	});
+var _elm_community$webgl$WebGL_Settings_Internal$Blend = function (a) {
+	return function (b) {
+		return function (c) {
+			return function (d) {
+				return function (e) {
+					return function (f) {
+						return function (g) {
+							return function (h) {
+								return function (i) {
+									return function (j) {
+										return {ctor: 'Blend', _0: a, _1: b, _2: c, _3: d, _4: e, _5: f, _6: g, _7: h, _8: i, _9: j};
+									};
+								};
+							};
+						};
+					};
+				};
+			};
+		};
+	};
+};

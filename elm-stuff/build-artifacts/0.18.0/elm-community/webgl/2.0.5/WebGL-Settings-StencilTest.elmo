@@ -1,0 +1,70 @@
+var _elm_community$webgl$WebGL_Settings_StencilTest$testSeparate = F3(
+	function (_p0, options1, options2) {
+		var _p1 = _p0;
+		var expandOp = F2(
+			function (_p2, fn) {
+				var _p3 = _p2;
+				return fn(_p3._0);
+			});
+		var expandTest = F2(
+			function (_p4, fn) {
+				var _p5 = _p4;
+				return fn(_p5._0);
+			});
+		var expand = function (_p6) {
+			var _p7 = _p6;
+			return function (_p8) {
+				return A2(
+					expandOp,
+					_p7.zpass,
+					A2(
+						expandOp,
+						_p7.zfail,
+						A2(
+							expandOp,
+							_p7.fail,
+							A2(expandTest, _p7.test, _p8))));
+			};
+		};
+		return A2(
+			expand,
+			options2,
+			A2(
+				expand,
+				options1,
+				A3(_elm_community$webgl$WebGL_Settings_Internal$StencilTest, _p1.ref, _p1.mask, _p1.writeMask)));
+	});
+var _elm_community$webgl$WebGL_Settings_StencilTest$test = function (_p9) {
+	var _p10 = _p9;
+	var _p14 = _p10.zpass;
+	var _p13 = _p10.zfail;
+	var _p12 = _p10.test;
+	var _p11 = _p10.fail;
+	return A3(
+		_elm_community$webgl$WebGL_Settings_StencilTest$testSeparate,
+		{ref: _p10.ref, mask: _p10.mask, writeMask: _p10.writeMask},
+		{test: _p12, fail: _p11, zfail: _p13, zpass: _p14},
+		{test: _p12, fail: _p11, zfail: _p13, zpass: _p14});
+};
+var _elm_community$webgl$WebGL_Settings_StencilTest$Test = function (a) {
+	return {ctor: 'Test', _0: a};
+};
+var _elm_community$webgl$WebGL_Settings_StencilTest$always = _elm_community$webgl$WebGL_Settings_StencilTest$Test(519);
+var _elm_community$webgl$WebGL_Settings_StencilTest$equal = _elm_community$webgl$WebGL_Settings_StencilTest$Test(514);
+var _elm_community$webgl$WebGL_Settings_StencilTest$never = _elm_community$webgl$WebGL_Settings_StencilTest$Test(512);
+var _elm_community$webgl$WebGL_Settings_StencilTest$less = _elm_community$webgl$WebGL_Settings_StencilTest$Test(513);
+var _elm_community$webgl$WebGL_Settings_StencilTest$greater = _elm_community$webgl$WebGL_Settings_StencilTest$Test(516);
+var _elm_community$webgl$WebGL_Settings_StencilTest$notEqual = _elm_community$webgl$WebGL_Settings_StencilTest$Test(517);
+var _elm_community$webgl$WebGL_Settings_StencilTest$lessOrEqual = _elm_community$webgl$WebGL_Settings_StencilTest$Test(515);
+var _elm_community$webgl$WebGL_Settings_StencilTest$greaterOrEqual = _elm_community$webgl$WebGL_Settings_StencilTest$Test(518);
+var _elm_community$webgl$WebGL_Settings_StencilTest$Operation = function (a) {
+	return {ctor: 'Operation', _0: a};
+};
+var _elm_community$webgl$WebGL_Settings_StencilTest$replace = _elm_community$webgl$WebGL_Settings_StencilTest$Operation(7681);
+var _elm_community$webgl$WebGL_Settings_StencilTest$keep = _elm_community$webgl$WebGL_Settings_StencilTest$Operation(7680);
+var _elm_community$webgl$WebGL_Settings_StencilTest$zero = _elm_community$webgl$WebGL_Settings_StencilTest$Operation(0);
+var _elm_community$webgl$WebGL_Settings_StencilTest$increment = _elm_community$webgl$WebGL_Settings_StencilTest$Operation(7682);
+var _elm_community$webgl$WebGL_Settings_StencilTest$decrement = _elm_community$webgl$WebGL_Settings_StencilTest$Operation(7683);
+var _elm_community$webgl$WebGL_Settings_StencilTest$invert = _elm_community$webgl$WebGL_Settings_StencilTest$Operation(5386);
+var _elm_community$webgl$WebGL_Settings_StencilTest$incrementWrap = _elm_community$webgl$WebGL_Settings_StencilTest$Operation(34055);
+var _elm_community$webgl$WebGL_Settings_StencilTest$decrementWrap = _elm_community$webgl$WebGL_Settings_StencilTest$Operation(34056);

@@ -1,0 +1,81 @@
+var _elm_community$webgl$WebGL$toHtmlWith = F3(
+	function (options, attributes, entities) {
+		return A3(_elm_community$webgl$Native_WebGL.toHtml, options, attributes, entities);
+	});
+var _elm_community$webgl$WebGL$entityWith = _elm_community$webgl$Native_WebGL.entity;
+var _elm_community$webgl$WebGL$entity = _elm_community$webgl$WebGL$entityWith(
+	{
+		ctor: '::',
+		_0: _elm_community$webgl$WebGL_Settings_DepthTest$default,
+		_1: {ctor: '[]'}
+	});
+var _elm_community$webgl$WebGL$unsafeShader = _elm_community$webgl$Native_WebGL.unsafeCoerceGLSL;
+var _elm_community$webgl$WebGL$IndexedTriangles = F2(
+	function (a, b) {
+		return {ctor: 'IndexedTriangles', _0: a, _1: b};
+	});
+var _elm_community$webgl$WebGL$indexedTriangles = _elm_community$webgl$WebGL$IndexedTriangles;
+var _elm_community$webgl$WebGL$TriangleStrip = function (a) {
+	return {ctor: 'TriangleStrip', _0: a};
+};
+var _elm_community$webgl$WebGL$triangleStrip = _elm_community$webgl$WebGL$TriangleStrip;
+var _elm_community$webgl$WebGL$TriangleFan = function (a) {
+	return {ctor: 'TriangleFan', _0: a};
+};
+var _elm_community$webgl$WebGL$triangleFan = _elm_community$webgl$WebGL$TriangleFan;
+var _elm_community$webgl$WebGL$Points = function (a) {
+	return {ctor: 'Points', _0: a};
+};
+var _elm_community$webgl$WebGL$points = _elm_community$webgl$WebGL$Points;
+var _elm_community$webgl$WebGL$LineLoop = function (a) {
+	return {ctor: 'LineLoop', _0: a};
+};
+var _elm_community$webgl$WebGL$lineLoop = _elm_community$webgl$WebGL$LineLoop;
+var _elm_community$webgl$WebGL$LineStrip = function (a) {
+	return {ctor: 'LineStrip', _0: a};
+};
+var _elm_community$webgl$WebGL$lineStrip = _elm_community$webgl$WebGL$LineStrip;
+var _elm_community$webgl$WebGL$Lines = function (a) {
+	return {ctor: 'Lines', _0: a};
+};
+var _elm_community$webgl$WebGL$lines = _elm_community$webgl$WebGL$Lines;
+var _elm_community$webgl$WebGL$Triangles = function (a) {
+	return {ctor: 'Triangles', _0: a};
+};
+var _elm_community$webgl$WebGL$triangles = _elm_community$webgl$WebGL$Triangles;
+var _elm_community$webgl$WebGL$Shader = {ctor: 'Shader'};
+var _elm_community$webgl$WebGL$Texture = {ctor: 'Texture'};
+var _elm_community$webgl$WebGL$Entity = {ctor: 'Entity'};
+var _elm_community$webgl$WebGL$ClearColor = F4(
+	function (a, b, c, d) {
+		return {ctor: 'ClearColor', _0: a, _1: b, _2: c, _3: d};
+	});
+var _elm_community$webgl$WebGL$clearColor = _elm_community$webgl$WebGL$ClearColor;
+var _elm_community$webgl$WebGL$Antialias = {ctor: 'Antialias'};
+var _elm_community$webgl$WebGL$antialias = _elm_community$webgl$WebGL$Antialias;
+var _elm_community$webgl$WebGL$Stencil = function (a) {
+	return {ctor: 'Stencil', _0: a};
+};
+var _elm_community$webgl$WebGL$stencil = _elm_community$webgl$WebGL$Stencil;
+var _elm_community$webgl$WebGL$Depth = function (a) {
+	return {ctor: 'Depth', _0: a};
+};
+var _elm_community$webgl$WebGL$depth = _elm_community$webgl$WebGL$Depth;
+var _elm_community$webgl$WebGL$Alpha = function (a) {
+	return {ctor: 'Alpha', _0: a};
+};
+var _elm_community$webgl$WebGL$alpha = _elm_community$webgl$WebGL$Alpha;
+var _elm_community$webgl$WebGL$toHtml = _elm_community$webgl$WebGL$toHtmlWith(
+	{
+		ctor: '::',
+		_0: _elm_community$webgl$WebGL$alpha(true),
+		_1: {
+			ctor: '::',
+			_0: _elm_community$webgl$WebGL$antialias,
+			_1: {
+				ctor: '::',
+				_0: _elm_community$webgl$WebGL$depth(1),
+				_1: {ctor: '[]'}
+			}
+		}
+	});

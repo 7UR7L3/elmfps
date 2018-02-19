@@ -1,0 +1,15 @@
+var _elm_community$webgl$WebGL_Settings$cullFace = function (_p0) {
+	var _p1 = _p0;
+	return _elm_community$webgl$WebGL_Settings_Internal$CullFace(_p1._0);
+};
+var _elm_community$webgl$WebGL_Settings$sampleCoverage = _elm_community$webgl$WebGL_Settings_Internal$SampleCoverage;
+var _elm_community$webgl$WebGL_Settings$sampleAlphaToCoverage = _elm_community$webgl$WebGL_Settings_Internal$SampleAlphaToCoverage;
+var _elm_community$webgl$WebGL_Settings$polygonOffset = _elm_community$webgl$WebGL_Settings_Internal$PolygonOffset;
+var _elm_community$webgl$WebGL_Settings$colorMask = _elm_community$webgl$WebGL_Settings_Internal$ColorMask;
+var _elm_community$webgl$WebGL_Settings$scissor = _elm_community$webgl$WebGL_Settings_Internal$Scissor;
+var _elm_community$webgl$WebGL_Settings$FaceMode = function (a) {
+	return {ctor: 'FaceMode', _0: a};
+};
+var _elm_community$webgl$WebGL_Settings$front = _elm_community$webgl$WebGL_Settings$FaceMode(1028);
+var _elm_community$webgl$WebGL_Settings$back = _elm_community$webgl$WebGL_Settings$FaceMode(1029);
+var _elm_community$webgl$WebGL_Settings$frontAndBack = _elm_community$webgl$WebGL_Settings$FaceMode(1032);

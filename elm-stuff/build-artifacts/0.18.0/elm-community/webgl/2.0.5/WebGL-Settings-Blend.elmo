@@ -1,0 +1,86 @@
+var _elm_community$webgl$WebGL_Settings_Blend$custom = function (_p0) {
+	var _p1 = _p0;
+	var expand = F2(
+		function (_p3, _p2) {
+			var _p4 = _p3;
+			var _p5 = _p2;
+			return _elm_community$webgl$WebGL_Settings_Internal$Blend(_p4._0)(_p4._1)(_p4._2)(_p5._0)(_p5._1)(_p5._2)(_p1.r)(_p1.g)(_p1.b)(_p1.a);
+		});
+	return A2(expand, _p1.color, _p1.alpha);
+};
+var _elm_community$webgl$WebGL_Settings_Blend$Factor = function (a) {
+	return {ctor: 'Factor', _0: a};
+};
+var _elm_community$webgl$WebGL_Settings_Blend$zero = _elm_community$webgl$WebGL_Settings_Blend$Factor(0);
+var _elm_community$webgl$WebGL_Settings_Blend$one = _elm_community$webgl$WebGL_Settings_Blend$Factor(1);
+var _elm_community$webgl$WebGL_Settings_Blend$srcColor = _elm_community$webgl$WebGL_Settings_Blend$Factor(768);
+var _elm_community$webgl$WebGL_Settings_Blend$oneMinusSrcColor = _elm_community$webgl$WebGL_Settings_Blend$Factor(769);
+var _elm_community$webgl$WebGL_Settings_Blend$dstColor = _elm_community$webgl$WebGL_Settings_Blend$Factor(774);
+var _elm_community$webgl$WebGL_Settings_Blend$oneMinusDstColor = _elm_community$webgl$WebGL_Settings_Blend$Factor(775);
+var _elm_community$webgl$WebGL_Settings_Blend$srcAlpha = _elm_community$webgl$WebGL_Settings_Blend$Factor(770);
+var _elm_community$webgl$WebGL_Settings_Blend$oneMinusSrcAlpha = _elm_community$webgl$WebGL_Settings_Blend$Factor(771);
+var _elm_community$webgl$WebGL_Settings_Blend$dstAlpha = _elm_community$webgl$WebGL_Settings_Blend$Factor(772);
+var _elm_community$webgl$WebGL_Settings_Blend$oneMinusDstAlpha = _elm_community$webgl$WebGL_Settings_Blend$Factor(773);
+var _elm_community$webgl$WebGL_Settings_Blend$srcAlphaSaturate = _elm_community$webgl$WebGL_Settings_Blend$Factor(776);
+var _elm_community$webgl$WebGL_Settings_Blend$constantColor = _elm_community$webgl$WebGL_Settings_Blend$Factor(32769);
+var _elm_community$webgl$WebGL_Settings_Blend$oneMinusConstantColor = _elm_community$webgl$WebGL_Settings_Blend$Factor(32770);
+var _elm_community$webgl$WebGL_Settings_Blend$constantAlpha = _elm_community$webgl$WebGL_Settings_Blend$Factor(32771);
+var _elm_community$webgl$WebGL_Settings_Blend$oneMinusConstantAlpha = _elm_community$webgl$WebGL_Settings_Blend$Factor(32772);
+var _elm_community$webgl$WebGL_Settings_Blend$Blender = F3(
+	function (a, b, c) {
+		return {ctor: 'Blender', _0: a, _1: b, _2: c};
+	});
+var _elm_community$webgl$WebGL_Settings_Blend$customAdd = F2(
+	function (_p7, _p6) {
+		var _p8 = _p7;
+		var _p9 = _p6;
+		return A3(_elm_community$webgl$WebGL_Settings_Blend$Blender, 32774, _p8._0, _p9._0);
+	});
+var _elm_community$webgl$WebGL_Settings_Blend$add = F2(
+	function (factor1, factor2) {
+		return _elm_community$webgl$WebGL_Settings_Blend$custom(
+			{
+				r: 0,
+				g: 0,
+				b: 0,
+				a: 0,
+				color: A2(_elm_community$webgl$WebGL_Settings_Blend$customAdd, factor1, factor2),
+				alpha: A2(_elm_community$webgl$WebGL_Settings_Blend$customAdd, factor1, factor2)
+			});
+	});
+var _elm_community$webgl$WebGL_Settings_Blend$customSubtract = F2(
+	function (_p11, _p10) {
+		var _p12 = _p11;
+		var _p13 = _p10;
+		return A3(_elm_community$webgl$WebGL_Settings_Blend$Blender, 32778, _p12._0, _p13._0);
+	});
+var _elm_community$webgl$WebGL_Settings_Blend$subtract = F2(
+	function (factor1, factor2) {
+		return _elm_community$webgl$WebGL_Settings_Blend$custom(
+			{
+				r: 0,
+				g: 0,
+				b: 0,
+				a: 0,
+				color: A2(_elm_community$webgl$WebGL_Settings_Blend$customSubtract, factor1, factor2),
+				alpha: A2(_elm_community$webgl$WebGL_Settings_Blend$customSubtract, factor1, factor2)
+			});
+	});
+var _elm_community$webgl$WebGL_Settings_Blend$customReverseSubtract = F2(
+	function (_p15, _p14) {
+		var _p16 = _p15;
+		var _p17 = _p14;
+		return A3(_elm_community$webgl$WebGL_Settings_Blend$Blender, 32779, _p16._0, _p17._0);
+	});
+var _elm_community$webgl$WebGL_Settings_Blend$reverseSubtract = F2(
+	function (factor1, factor2) {
+		return _elm_community$webgl$WebGL_Settings_Blend$custom(
+			{
+				r: 0,
+				g: 0,
+				b: 0,
+				a: 0,
+				color: A2(_elm_community$webgl$WebGL_Settings_Blend$customReverseSubtract, factor1, factor2),
+				alpha: A2(_elm_community$webgl$WebGL_Settings_Blend$customReverseSubtract, factor1, factor2)
+			});
+	});
