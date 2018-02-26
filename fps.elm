@@ -1,7 +1,7 @@
 module Fps exposing (main)
 
 import WebGL exposing (Mesh, Shader)
-import Math.Vector3 exposing (Vec3, vec3, add, scale, normalize, length, dot)
+import Math.Vector3 exposing (Vec3, vec3, add, scale, normalize, length, dot, getX, getY, getZ)
 import Math.Matrix4 exposing (Mat4, makeRotate, mul, makeLookAt, makePerspective, inverseOrthonormal, transpose)
 import AnimationFrame
 import Window
@@ -70,9 +70,12 @@ view { size, angle } =
         , height size.height
         , style [ ( "display", "block" ) ]
         ]
-        [ WebGL.entity vertexShader fragmentShader copter (uniforms size (angle / 10))
-        , WebGL.entity vertexShader fragmentShader blade (uniforms size (angle / 10 - angle))
-        , WebGL.entity vertexShader fragmentShader blade (uniforms size 20)
+        [
+            --WebGL.entity vertexShader fragmentShader copter (uniforms size (angle / 10)),
+            --WebGL.entity vertexShader fragmentShader blade (uniforms size (angle / 10 - angle)),
+            --WebGL.entity vertexShader fragmentShader blade (uniforms size 20),
+            WebGL.entity vertexShader fragmentShader (WebGL.triangles ( ptToCube (vec3 10 0 10) 4 (vec3 0.2 0.2 0.2)) ) (uniforms size (angle/2)),
+            WebGL.entity vertexShader fragmentShader (WebGL.triangles map) (uniforms size 20)
         ]
 
 
@@ -83,9 +86,9 @@ view { size, angle } =
 
 uniforms : Window.Size -> Float -> Uniform
 uniforms { width, height } angle =
-    { rotation = makeRotate angle (vec3 0 1 0)
+    { rotation = makeRotate angle (vec3 -1 0 0)
     , perspective = makePerspective 45 (toFloat width / toFloat height) 0.01 100
-    , camera = makeLookAt (vec3 0 0 5) (vec3 0 (( (toFloat ((round angle) % 100)) - 50 )/10) 0) (vec3 0 1 0)
+    , camera = makeLookAt (vec3 0 0 5) (vec3 0 0 0) (vec3 0 1 0)
     }
 
 
@@ -170,6 +173,59 @@ blade =
 
 
 
+dotMap =
+    [
+        vec3 0 0 0,
+        vec3 0 1 0,
+        vec3 0 2 0,
+        vec3 0 3 0,
+        vec3 1 0 0,
+        vec3 1 1 0,
+        vec3 1 2 0,
+        vec3 1 3 0,
+        vec3 2 0 0,
+        vec3 2 1 0,
+        vec3 2 2 0,
+        vec3 2 3 0,
+        vec3 1 3 1,
+        vec3 2 2 1,
+        vec3 2 3 1,
+        vec3 2 3 2
+    ]
+
+ptToCube p s col =
+    let fll = vec3 ( (getX p) - s ) ( (getY p) - s ) ( (getZ p) - s ) in
+    let flr = vec3 ( (getX p) + s ) ( (getY p) - s ) ( (getZ p) - s ) in
+    let ful = vec3 ( (getX p) - s ) ( (getY p) + s ) ( (getZ p) - s ) in
+    let fur = vec3 ( (getX p) + s ) ( (getY p) + s ) ( (getZ p) - s ) in
+    let bll = vec3 ( (getX p) - s ) ( (getY p) - s ) ( (getZ p) + s ) in
+    let blr = vec3 ( (getX p) + s ) ( (getY p) - s ) ( (getZ p) + s ) in
+    let bul = vec3 ( (getX p) - s ) ( (getY p) + s ) ( (getZ p) + s ) in
+    let bur = vec3 ( (getX p) + s ) ( (getY p) + s ) ( (getZ p) + s ) in
+    [   
+        ( Vertex ful col, Vertex fur col, Vertex flr col ), -- front
+        ( Vertex ful col, Vertex flr col, Vertex fll col ),
+
+        ( Vertex bul col, Vertex bur col, Vertex blr col ), -- back
+        ( Vertex bul col, Vertex blr col, Vertex bll col ),
+
+        ( Vertex bul col, Vertex ful col, Vertex fll col ), -- left
+        ( Vertex bul col, Vertex fll col, Vertex bll col ),
+
+        ( Vertex bur col, Vertex fur col, Vertex flr col ), -- right
+        ( Vertex bur col, Vertex flr col, Vertex blr col ),
+
+        ( Vertex bul col, Vertex bur col, Vertex fur col ), -- top
+        ( Vertex bul col, Vertex fur col, Vertex ful col ),
+
+        ( Vertex bll col, Vertex blr col, Vertex flr col ), -- bottom
+        ( Vertex bll col, Vertex flr col, Vertex fll col )
+    ]
+
+map = List.concatMap
+                ( \e ->
+                    ptToCube e 3 (vec3 0.2 0.5 0.5) )
+                ( List.map ( scale 8 ) dotMap )
 
 
 copter : Mesh Vertex

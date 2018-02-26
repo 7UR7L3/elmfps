@@ -1,3 +1,68 @@
+var _user$project$Fps$dotMap = {
+	ctor: '::',
+	_0: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 0, 0, 0),
+	_1: {
+		ctor: '::',
+		_0: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 0, 1, 0),
+		_1: {
+			ctor: '::',
+			_0: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 0, 2, 0),
+			_1: {
+				ctor: '::',
+				_0: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 0, 3, 0),
+				_1: {
+					ctor: '::',
+					_0: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 1, 0, 0),
+					_1: {
+						ctor: '::',
+						_0: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 1, 1, 0),
+						_1: {
+							ctor: '::',
+							_0: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 1, 2, 0),
+							_1: {
+								ctor: '::',
+								_0: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 1, 3, 0),
+								_1: {
+									ctor: '::',
+									_0: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 2, 0, 0),
+									_1: {
+										ctor: '::',
+										_0: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 2, 1, 0),
+										_1: {
+											ctor: '::',
+											_0: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 2, 2, 0),
+											_1: {
+												ctor: '::',
+												_0: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 2, 3, 0),
+												_1: {
+													ctor: '::',
+													_0: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 1, 3, 1),
+													_1: {
+														ctor: '::',
+														_0: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 2, 2, 1),
+														_1: {
+															ctor: '::',
+															_0: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 2, 3, 1),
+															_1: {
+																ctor: '::',
+																_0: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 2, 3, 2),
+																_1: {ctor: '[]'}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+};
 var _user$project$Fps$fragmentShader = {'src': '\n  precision mediump float;\n  varying vec3 vcolor;\n  void main () {\n      gl_FragColor = vec4(vcolor, 1.0);\n  }\n'};
 var _user$project$Fps$vertexShader = {'src': '\n  attribute vec3 position;\n  attribute vec3 color;\n  uniform mat4 perspective;\n  uniform mat4 camera;\n  uniform mat4 rotation;\n  varying vec3 vcolor;\n  void main () {\n      gl_Position = perspective * camera * rotation * vec4((0.05 * position) , 1.0);\n      vcolor = color;\n  }\n'};
 var _user$project$Fps$uniforms = F2(
@@ -7,7 +72,7 @@ var _user$project$Fps$uniforms = F2(
 			rotation: A2(
 				_elm_community$linear_algebra$Math_Matrix4$makeRotate,
 				angle,
-				A3(_elm_community$linear_algebra$Math_Vector3$vec3, 0, 1, 0)),
+				A3(_elm_community$linear_algebra$Math_Vector3$vec3, -1, 0, 0)),
 			perspective: A4(
 				_elm_community$linear_algebra$Math_Matrix4$makePerspective,
 				45,
@@ -17,15 +82,7 @@ var _user$project$Fps$uniforms = F2(
 			camera: A3(
 				_elm_community$linear_algebra$Math_Matrix4$makeLookAt,
 				A3(_elm_community$linear_algebra$Math_Vector3$vec3, 0, 0, 5),
-				A3(
-					_elm_community$linear_algebra$Math_Vector3$vec3,
-					0,
-					(_elm_lang$core$Basics$toFloat(
-						A2(
-							_elm_lang$core$Basics_ops['%'],
-							_elm_lang$core$Basics$round(angle),
-							100)) - 50) / 10,
-					0),
+				A3(_elm_community$linear_algebra$Math_Vector3$vec3, 0, 0, 0),
 				A3(_elm_community$linear_algebra$Math_Vector3$vec3, 0, 1, 0))
 		};
 	});
@@ -94,6 +151,219 @@ var _user$project$Fps$blade = _elm_community$webgl$WebGL$triangles(
 			_1: {ctor: '[]'}
 		}
 	});
+var _user$project$Fps$ptToCube = F3(
+	function (p, s, col) {
+		var fll = A3(
+			_elm_community$linear_algebra$Math_Vector3$vec3,
+			_elm_community$linear_algebra$Math_Vector3$getX(p) - s,
+			_elm_community$linear_algebra$Math_Vector3$getY(p) - s,
+			_elm_community$linear_algebra$Math_Vector3$getZ(p) - s);
+		var flr = A3(
+			_elm_community$linear_algebra$Math_Vector3$vec3,
+			_elm_community$linear_algebra$Math_Vector3$getX(p) + s,
+			_elm_community$linear_algebra$Math_Vector3$getY(p) - s,
+			_elm_community$linear_algebra$Math_Vector3$getZ(p) - s);
+		var ful = A3(
+			_elm_community$linear_algebra$Math_Vector3$vec3,
+			_elm_community$linear_algebra$Math_Vector3$getX(p) - s,
+			_elm_community$linear_algebra$Math_Vector3$getY(p) + s,
+			_elm_community$linear_algebra$Math_Vector3$getZ(p) - s);
+		var fur = A3(
+			_elm_community$linear_algebra$Math_Vector3$vec3,
+			_elm_community$linear_algebra$Math_Vector3$getX(p) + s,
+			_elm_community$linear_algebra$Math_Vector3$getY(p) + s,
+			_elm_community$linear_algebra$Math_Vector3$getZ(p) - s);
+		var bll = A3(
+			_elm_community$linear_algebra$Math_Vector3$vec3,
+			_elm_community$linear_algebra$Math_Vector3$getX(p) - s,
+			_elm_community$linear_algebra$Math_Vector3$getY(p) - s,
+			_elm_community$linear_algebra$Math_Vector3$getZ(p) + s);
+		var blr = A3(
+			_elm_community$linear_algebra$Math_Vector3$vec3,
+			_elm_community$linear_algebra$Math_Vector3$getX(p) + s,
+			_elm_community$linear_algebra$Math_Vector3$getY(p) - s,
+			_elm_community$linear_algebra$Math_Vector3$getZ(p) + s);
+		var bul = A3(
+			_elm_community$linear_algebra$Math_Vector3$vec3,
+			_elm_community$linear_algebra$Math_Vector3$getX(p) - s,
+			_elm_community$linear_algebra$Math_Vector3$getY(p) + s,
+			_elm_community$linear_algebra$Math_Vector3$getZ(p) + s);
+		var bur = A3(
+			_elm_community$linear_algebra$Math_Vector3$vec3,
+			_elm_community$linear_algebra$Math_Vector3$getX(p) + s,
+			_elm_community$linear_algebra$Math_Vector3$getY(p) + s,
+			_elm_community$linear_algebra$Math_Vector3$getZ(p) + s);
+		return {
+			ctor: '::',
+			_0: {
+				ctor: '_Tuple3',
+				_0: A2(_user$project$Fps$Vertex, ful, col),
+				_1: A2(_user$project$Fps$Vertex, fur, col),
+				_2: A2(_user$project$Fps$Vertex, flr, col)
+			},
+			_1: {
+				ctor: '::',
+				_0: {
+					ctor: '_Tuple3',
+					_0: A2(_user$project$Fps$Vertex, ful, col),
+					_1: A2(_user$project$Fps$Vertex, flr, col),
+					_2: A2(_user$project$Fps$Vertex, fll, col)
+				},
+				_1: {
+					ctor: '::',
+					_0: {
+						ctor: '_Tuple3',
+						_0: A2(_user$project$Fps$Vertex, bul, col),
+						_1: A2(_user$project$Fps$Vertex, bur, col),
+						_2: A2(_user$project$Fps$Vertex, blr, col)
+					},
+					_1: {
+						ctor: '::',
+						_0: {
+							ctor: '_Tuple3',
+							_0: A2(_user$project$Fps$Vertex, bul, col),
+							_1: A2(_user$project$Fps$Vertex, blr, col),
+							_2: A2(_user$project$Fps$Vertex, bll, col)
+						},
+						_1: {
+							ctor: '::',
+							_0: {
+								ctor: '_Tuple3',
+								_0: A2(_user$project$Fps$Vertex, bul, col),
+								_1: A2(_user$project$Fps$Vertex, ful, col),
+								_2: A2(_user$project$Fps$Vertex, fll, col)
+							},
+							_1: {
+								ctor: '::',
+								_0: {
+									ctor: '_Tuple3',
+									_0: A2(_user$project$Fps$Vertex, bul, col),
+									_1: A2(_user$project$Fps$Vertex, fll, col),
+									_2: A2(_user$project$Fps$Vertex, bll, col)
+								},
+								_1: {
+									ctor: '::',
+									_0: {
+										ctor: '_Tuple3',
+										_0: A2(_user$project$Fps$Vertex, bur, col),
+										_1: A2(_user$project$Fps$Vertex, fur, col),
+										_2: A2(_user$project$Fps$Vertex, flr, col)
+									},
+									_1: {
+										ctor: '::',
+										_0: {
+											ctor: '_Tuple3',
+											_0: A2(_user$project$Fps$Vertex, bur, col),
+											_1: A2(_user$project$Fps$Vertex, flr, col),
+											_2: A2(_user$project$Fps$Vertex, blr, col)
+										},
+										_1: {
+											ctor: '::',
+											_0: {
+												ctor: '_Tuple3',
+												_0: A2(_user$project$Fps$Vertex, bul, col),
+												_1: A2(_user$project$Fps$Vertex, bur, col),
+												_2: A2(_user$project$Fps$Vertex, fur, col)
+											},
+											_1: {
+												ctor: '::',
+												_0: {
+													ctor: '_Tuple3',
+													_0: A2(_user$project$Fps$Vertex, bul, col),
+													_1: A2(_user$project$Fps$Vertex, fur, col),
+													_2: A2(_user$project$Fps$Vertex, ful, col)
+												},
+												_1: {
+													ctor: '::',
+													_0: {
+														ctor: '_Tuple3',
+														_0: A2(_user$project$Fps$Vertex, bll, col),
+														_1: A2(_user$project$Fps$Vertex, blr, col),
+														_2: A2(_user$project$Fps$Vertex, flr, col)
+													},
+													_1: {
+														ctor: '::',
+														_0: {
+															ctor: '_Tuple3',
+															_0: A2(_user$project$Fps$Vertex, bll, col),
+															_1: A2(_user$project$Fps$Vertex, flr, col),
+															_2: A2(_user$project$Fps$Vertex, fll, col)
+														},
+														_1: {ctor: '[]'}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		};
+	});
+var _user$project$Fps$map = A2(
+	_elm_lang$core$List$concatMap,
+	function (e) {
+		return A3(
+			_user$project$Fps$ptToCube,
+			e,
+			3,
+			A3(_elm_community$linear_algebra$Math_Vector3$vec3, 0.2, 0.5, 0.5));
+	},
+	A2(
+		_elm_lang$core$List$map,
+		_elm_community$linear_algebra$Math_Vector3$scale(8),
+		_user$project$Fps$dotMap));
+var _user$project$Fps$view = function (_p3) {
+	var _p4 = _p3;
+	var _p5 = _p4.size;
+	return A2(
+		_elm_community$webgl$WebGL$toHtml,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$width(_p5.width),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$height(_p5.height),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$style(
+						{
+							ctor: '::',
+							_0: {ctor: '_Tuple2', _0: 'display', _1: 'block'},
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}
+			}
+		},
+		{
+			ctor: '::',
+			_0: A4(
+				_elm_community$webgl$WebGL$entity,
+				_user$project$Fps$vertexShader,
+				_user$project$Fps$fragmentShader,
+				_elm_community$webgl$WebGL$triangles(
+					A3(
+						_user$project$Fps$ptToCube,
+						A3(_elm_community$linear_algebra$Math_Vector3$vec3, 10, 0, 10),
+						4,
+						A3(_elm_community$linear_algebra$Math_Vector3$vec3, 0.2, 0.2, 0.2))),
+				A2(_user$project$Fps$uniforms, _p5, _p4.angle / 2)),
+			_1: {
+				ctor: '::',
+				_0: A4(
+					_elm_community$webgl$WebGL$entity,
+					_user$project$Fps$vertexShader,
+					_user$project$Fps$fragmentShader,
+					_elm_community$webgl$WebGL$triangles(_user$project$Fps$map),
+					A2(_user$project$Fps$uniforms, _p5, 20)),
+				_1: {ctor: '[]'}
+			}
+		});
+};
 var _user$project$Fps$copter = _elm_community$webgl$WebGL$triangles(
 	{
 		ctor: '::',
@@ -3732,59 +4002,6 @@ var _user$project$Fps$copter = _elm_community$webgl$WebGL$triangles(
 			}
 		}
 	});
-var _user$project$Fps$view = function (_p3) {
-	var _p4 = _p3;
-	var _p6 = _p4.size;
-	var _p5 = _p4.angle;
-	return A2(
-		_elm_community$webgl$WebGL$toHtml,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$width(_p6.width),
-			_1: {
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$height(_p6.height),
-				_1: {
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$style(
-						{
-							ctor: '::',
-							_0: {ctor: '_Tuple2', _0: 'display', _1: 'block'},
-							_1: {ctor: '[]'}
-						}),
-					_1: {ctor: '[]'}
-				}
-			}
-		},
-		{
-			ctor: '::',
-			_0: A4(
-				_elm_community$webgl$WebGL$entity,
-				_user$project$Fps$vertexShader,
-				_user$project$Fps$fragmentShader,
-				_user$project$Fps$copter,
-				A2(_user$project$Fps$uniforms, _p6, _p5 / 10)),
-			_1: {
-				ctor: '::',
-				_0: A4(
-					_elm_community$webgl$WebGL$entity,
-					_user$project$Fps$vertexShader,
-					_user$project$Fps$fragmentShader,
-					_user$project$Fps$blade,
-					A2(_user$project$Fps$uniforms, _p6, (_p5 / 10) - _p5)),
-				_1: {
-					ctor: '::',
-					_0: A4(
-						_elm_community$webgl$WebGL$entity,
-						_user$project$Fps$vertexShader,
-						_user$project$Fps$fragmentShader,
-						_user$project$Fps$blade,
-						A2(_user$project$Fps$uniforms, _p6, 20)),
-					_1: {ctor: '[]'}
-				}
-			}
-		});
-};
 var _user$project$Fps$Uniform = F3(
 	function (a, b, c) {
 		return {rotation: a, perspective: b, camera: c};
@@ -3795,7 +4012,7 @@ var _user$project$Fps$Varying = function (a) {
 var _user$project$Fps$Animate = function (a) {
 	return {ctor: 'Animate', _0: a};
 };
-var _user$project$Fps$subscriptions = function (_p7) {
+var _user$project$Fps$subscriptions = function (_p6) {
 	return _elm_lang$core$Platform_Sub$batch(
 		{
 			ctor: '::',
