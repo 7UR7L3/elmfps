@@ -65,9 +65,9 @@ update action model =
         Resize size ->
             { model | size = size } ! []
 
-        Animate elapsed -> let dir = directionToAngle <| Keyboard.Extra.arrowsDirection model.pressedKeys in
+        Animate elapsed -> let dir = directionToAngle <| Keyboard.Extra.wasdDirection model.pressedKeys in
             { model | angle = model.angle + dir / 50,
-                      position = if model.pressedKeys == [] then model.position else vec3 ((getX model.position) + (sin dir)/100) (getY model.position) ((getZ model.position) - (cos dir)/100) } ! []
+                      position = if model.pressedKeys == [] then model.position else vec3 ((getX model.position) + (sin dir)/75) (getY model.position) ((getZ model.position) - (cos dir)/75) } ! []
 
         KeyboardMsg keyMsg -> let keys = Keyboard.Extra.update keyMsg model.pressedKeys in
             { model | pressedKeys = keys } ! []

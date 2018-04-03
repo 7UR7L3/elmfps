@@ -13103,7 +13103,7 @@ var _user$project$Fps$update = F2(
 					{ctor: '[]'});
 			case 'Animate':
 				var dir = _user$project$Fps$directionToAngle(
-					_ohanhi$keyboard_extra$Keyboard_Extra$arrowsDirection(model.pressedKeys));
+					_ohanhi$keyboard_extra$Keyboard_Extra$wasdDirection(model.pressedKeys));
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
@@ -13114,9 +13114,9 @@ var _user$project$Fps$update = F2(
 								model.pressedKeys,
 								{ctor: '[]'}) ? model.position : A3(
 								_elm_community$linear_algebra$Math_Vector3$vec3,
-								_elm_community$linear_algebra$Math_Vector3$getX(model.position) + (_elm_lang$core$Basics$sin(dir) / 100),
+								_elm_community$linear_algebra$Math_Vector3$getX(model.position) + (_elm_lang$core$Basics$sin(dir) / 75),
 								_elm_community$linear_algebra$Math_Vector3$getY(model.position),
-								_elm_community$linear_algebra$Math_Vector3$getZ(model.position) - (_elm_lang$core$Basics$cos(dir) / 100))
+								_elm_community$linear_algebra$Math_Vector3$getZ(model.position) - (_elm_lang$core$Basics$cos(dir) / 75))
 						}),
 					{ctor: '[]'});
 			default:
