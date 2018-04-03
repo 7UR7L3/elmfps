@@ -13102,21 +13102,19 @@ var _user$project$Fps$update = F2(
 						{size: _p3._0}),
 					{ctor: '[]'});
 			case 'Animate':
-				var dir = _user$project$Fps$directionToAngle(
-					_ohanhi$keyboard_extra$Keyboard_Extra$wasdDirection(model.pressedKeys));
+				var dir = _ohanhi$keyboard_extra$Keyboard_Extra$wasdDirection(model.pressedKeys);
+				var a = _user$project$Fps$directionToAngle(dir);
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
 						model,
 						{
-							angle: model.angle + (dir / 50),
-							position: _elm_lang$core$Native_Utils.eq(
-								model.pressedKeys,
-								{ctor: '[]'}) ? model.position : A3(
+							angle: model.angle + (a / 50),
+							position: _elm_lang$core$Native_Utils.eq(dir, _ohanhi$keyboard_extra$Keyboard_Extra$NoDirection) ? model.position : A3(
 								_elm_community$linear_algebra$Math_Vector3$vec3,
-								_elm_community$linear_algebra$Math_Vector3$getX(model.position) + (_elm_lang$core$Basics$sin(dir) / 75),
+								_elm_community$linear_algebra$Math_Vector3$getX(model.position) + (_elm_lang$core$Basics$sin(a) / 75),
 								_elm_community$linear_algebra$Math_Vector3$getY(model.position),
-								_elm_community$linear_algebra$Math_Vector3$getZ(model.position) - (_elm_lang$core$Basics$cos(dir) / 75))
+								_elm_community$linear_algebra$Math_Vector3$getZ(model.position) - (_elm_lang$core$Basics$cos(a) / 75))
 						}),
 					{ctor: '[]'});
 			default:
