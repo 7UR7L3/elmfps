@@ -98,7 +98,7 @@ var _user$project$Fps$uniforms = F3(
 				A3(_elm_community$linear_algebra$Math_Vector3$vec3, -1, 0, 0)),
 			perspective: A4(
 				_elm_community$linear_algebra$Math_Matrix4$makePerspective,
-				75,
+				45,
 				_elm_lang$core$Basics$toFloat(_p2.width) / _elm_lang$core$Basics$toFloat(_p2.height),
 				1.0e-2,
 				100),
@@ -126,7 +126,7 @@ var _user$project$Fps$update = F2(
 					{ctor: '[]'});
 			case 'Animate':
 				var dir = _user$project$Fps$directionToAngle(
-					_ohanhi$keyboard_extra$Keyboard_Extra$wasdDirection(model.pressedKeys));
+					_ohanhi$keyboard_extra$Keyboard_Extra$arrowsDirection(model.pressedKeys));
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(

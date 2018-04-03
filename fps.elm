@@ -65,7 +65,7 @@ update action model =
         Resize size ->
             { model | size = size } ! []
 
-        Animate elapsed -> let dir = directionToAngle <| Keyboard.Extra.wasdDirection model.pressedKeys in
+        Animate elapsed -> let dir = directionToAngle <| Keyboard.Extra.arrowsDirection model.pressedKeys in
             { model | angle = model.angle + dir / 50,
                       position = if model.pressedKeys == [] then model.position else vec3 ((getX model.position) + (sin dir)/100) (getY model.position) ((getZ model.position) - (cos dir)/100) } ! []
 
@@ -98,7 +98,7 @@ view { size, angle, position, pressedKeys } =
 uniforms : Window.Size -> Float -> Vec3 -> Uniform
 uniforms { width, height } angle position =
     { rotation = makeRotate angle (vec3 -1 0 0)
-    , perspective = makePerspective 75 (toFloat width / toFloat height) 0.01 100
+    , perspective = makePerspective 45 (toFloat width / toFloat height) 0.01 100
     , camera = makeLookAt position (vec3 (getX position) (getY position) ((getZ position) - 1)) (vec3 0 1 0)
     }
 
