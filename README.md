@@ -12,6 +12,7 @@ As for what anything is, allow me to explain:
 - [Now this here](https://medium.com/@zenitram.oiram/a-beginners-guide-to-websockets-in-elm-and-crystal-8f510c28eb61) is (and fuck medium but whatever you get over it) something that could possibly be almost decent enough. How do we know? Well, we have no idea. It was just one of the first hits on google.
 	- [The Kemal thing](http://kemalcr.com/) is probably the thing that we'll toss up on heroku and magic into something almost functional (ayy).
 	- [And here's how](https://guide.elm-lang.org/architecture/effects/web_sockets.html) we get the socket things in the elm stuffs.
+- [Keyboard Extra](https://github.com/ohanhi/keyboard-extra) is a thing that makes keyboard input fairly nice probably.
 
 Trust us though, we have mad experience with this stuff.
 
