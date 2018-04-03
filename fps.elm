@@ -45,7 +45,7 @@ init : ( Model, Cmd Action )
 init =
     ( { size = Window.Size 0 0
       , angle = 0
-      , position = vec3 0 0 0
+      , position = vec3 0 0.3 0
       , pressedKeys = []
       }
     , Task.perform Resize Window.size
@@ -65,8 +65,9 @@ update action model =
         Resize size ->
             { model | size = size } ! []
 
-        Animate elapsed ->
-            { model | angle = model.angle + ( directionToAngle ( Keyboard.Extra.wasdDirection model.pressedKeys ) ) - pi } ! []
+        Animate elapsed -> let dir = directionToAngle <| Keyboard.Extra.wasdDirection model.pressedKeys in
+            { model | angle = model.angle + dir / 50,
+                      position = if model.pressedKeys == [] then model.position else vec3 ((getX model.position) + (sin dir)/100) (getY model.position) ((getZ model.position) - (cos dir)/100) } ! []
 
         KeyboardMsg keyMsg -> let keys = Keyboard.Extra.update keyMsg model.pressedKeys in
             { model | pressedKeys = keys } ! []
@@ -84,8 +85,8 @@ view { size, angle, position, pressedKeys } =
             --WebGL.entity vertexShader fragmentShader copter (uniforms size (angle / 10)),
             --WebGL.entity vertexShader fragmentShader blade (uniforms size (angle / 10 - angle)),
             --WebGL.entity vertexShader fragmentShader blade (uniforms size 20),
-            WebGL.entity vertexShader fragmentShader (WebGL.triangles ( ptToCube (vec3 10 0 10) 4 (vec3 0.2 0.2 0.2)) ) (uniforms size (angle/2)),
-            WebGL.entity vertexShader fragmentShader (WebGL.triangles map) (uniforms size 20)
+            --WebGL.entity vertexShader fragmentShader (WebGL.triangles ( ptToCube (vec3 10 0 10) 4 (vec3 0.2 0.2 0.2)) ) (uniforms size (angle/2) position),
+            WebGL.entity vertexShader fragmentShader (WebGL.triangles map) (uniforms size (pi/2) position)
         ]
 
 
@@ -94,11 +95,11 @@ view { size, angle, position, pressedKeys } =
 
 
 
-uniforms : Window.Size -> Float -> Uniform
-uniforms { width, height } angle =
+uniforms : Window.Size -> Float -> Vec3 -> Uniform
+uniforms { width, height } angle position =
     { rotation = makeRotate angle (vec3 -1 0 0)
-    , perspective = makePerspective 45 (toFloat width / toFloat height) 0.01 100
-    , camera = makeLookAt (vec3 0 0 5) (vec3 0 0 0) (vec3 0 1 0)
+    , perspective = makePerspective 75 (toFloat width / toFloat height) 0.01 100
+    , camera = makeLookAt position (vec3 (getX position) (getY position) ((getZ position) - 1)) (vec3 0 1 0)
     }
 
 
@@ -196,23 +197,6 @@ directionToAngle direction =
 
 
 
-
-
-blade : Mesh Vertex
-blade =
-    WebGL.triangles
-        [ ( Vertex (vec3 -10 10 -10) (vec3 0 0 0)
-          , Vertex (vec3 10 10 -10) (vec3 0 0 0)
-          , Vertex (vec3 -10 -10 -10) (vec3 0 0 0)
-          )
-        , ( Vertex (vec3 10 10 -10) (vec3 0 0 0)
-          , Vertex (vec3 -10 -10 -10) (vec3 0 0 0)
-          , Vertex (vec3 10 -10 -10) (vec3 1.6039 0.6039 0.6118)
-          )
-        ]
-
-
-
 dotMap =
     [
         vec3 0 0 0,
@@ -264,5 +248,5 @@ ptToCube p s col =
 
 map = List.concatMap
                 ( \e ->
-                    ptToCube e 3 (vec3 0.2 0.5 0.5) )
-                ( List.map ( scale 8 ) dotMap )
+                    ptToCube e 1.5 (vec3 0.2 0.5 0.5) )
+                ( List.map ( scale 4 ) dotMap )

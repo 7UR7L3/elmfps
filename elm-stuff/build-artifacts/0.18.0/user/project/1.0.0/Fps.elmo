@@ -88,8 +88,8 @@ var _user$project$Fps$directionToAngle = function (direction) {
 };
 var _user$project$Fps$fragmentShader = {'src': '\n  precision mediump float;\n  varying vec3 vcolor;\n  void main () {\n      gl_FragColor = vec4(vcolor, 1.0);\n  }\n'};
 var _user$project$Fps$vertexShader = {'src': '\n  attribute vec3 position;\n  attribute vec3 color;\n  uniform mat4 perspective;\n  uniform mat4 camera;\n  uniform mat4 rotation;\n  varying vec3 vcolor;\n  void main () {\n      gl_Position = perspective * camera * rotation * vec4((0.05 * position) , 1.0);\n      vcolor = color;\n  }\n'};
-var _user$project$Fps$uniforms = F2(
-	function (_p1, angle) {
+var _user$project$Fps$uniforms = F3(
+	function (_p1, angle, position) {
 		var _p2 = _p1;
 		return {
 			rotation: A2(
@@ -98,14 +98,18 @@ var _user$project$Fps$uniforms = F2(
 				A3(_elm_community$linear_algebra$Math_Vector3$vec3, -1, 0, 0)),
 			perspective: A4(
 				_elm_community$linear_algebra$Math_Matrix4$makePerspective,
-				45,
+				75,
 				_elm_lang$core$Basics$toFloat(_p2.width) / _elm_lang$core$Basics$toFloat(_p2.height),
 				1.0e-2,
 				100),
 			camera: A3(
 				_elm_community$linear_algebra$Math_Matrix4$makeLookAt,
-				A3(_elm_community$linear_algebra$Math_Vector3$vec3, 0, 0, 5),
-				A3(_elm_community$linear_algebra$Math_Vector3$vec3, 0, 0, 0),
+				position,
+				A3(
+					_elm_community$linear_algebra$Math_Vector3$vec3,
+					_elm_community$linear_algebra$Math_Vector3$getX(position),
+					_elm_community$linear_algebra$Math_Vector3$getY(position),
+					_elm_community$linear_algebra$Math_Vector3$getZ(position) - 1),
 				A3(_elm_community$linear_algebra$Math_Vector3$vec3, 0, 1, 0))
 		};
 	});
@@ -121,13 +125,21 @@ var _user$project$Fps$update = F2(
 						{size: _p3._0}),
 					{ctor: '[]'});
 			case 'Animate':
+				var dir = _user$project$Fps$directionToAngle(
+					_ohanhi$keyboard_extra$Keyboard_Extra$wasdDirection(model.pressedKeys));
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
 						model,
 						{
-							angle: (model.angle + _user$project$Fps$directionToAngle(
-								_ohanhi$keyboard_extra$Keyboard_Extra$wasdDirection(model.pressedKeys))) - _elm_lang$core$Basics$pi
+							angle: model.angle + (dir / 50),
+							position: _elm_lang$core$Native_Utils.eq(
+								model.pressedKeys,
+								{ctor: '[]'}) ? model.position : A3(
+								_elm_community$linear_algebra$Math_Vector3$vec3,
+								_elm_community$linear_algebra$Math_Vector3$getX(model.position) + (_elm_lang$core$Basics$sin(dir) / 100),
+								_elm_community$linear_algebra$Math_Vector3$getY(model.position),
+								_elm_community$linear_algebra$Math_Vector3$getZ(model.position) - (_elm_lang$core$Basics$cos(dir) / 100))
 						}),
 					{ctor: '[]'});
 			default:
@@ -147,44 +159,6 @@ var _user$project$Fps$Model = F4(
 var _user$project$Fps$Vertex = F2(
 	function (a, b) {
 		return {position: a, color: b};
-	});
-var _user$project$Fps$blade = _elm_community$webgl$WebGL$triangles(
-	{
-		ctor: '::',
-		_0: {
-			ctor: '_Tuple3',
-			_0: A2(
-				_user$project$Fps$Vertex,
-				A3(_elm_community$linear_algebra$Math_Vector3$vec3, -10, 10, -10),
-				A3(_elm_community$linear_algebra$Math_Vector3$vec3, 0, 0, 0)),
-			_1: A2(
-				_user$project$Fps$Vertex,
-				A3(_elm_community$linear_algebra$Math_Vector3$vec3, 10, 10, -10),
-				A3(_elm_community$linear_algebra$Math_Vector3$vec3, 0, 0, 0)),
-			_2: A2(
-				_user$project$Fps$Vertex,
-				A3(_elm_community$linear_algebra$Math_Vector3$vec3, -10, -10, -10),
-				A3(_elm_community$linear_algebra$Math_Vector3$vec3, 0, 0, 0))
-		},
-		_1: {
-			ctor: '::',
-			_0: {
-				ctor: '_Tuple3',
-				_0: A2(
-					_user$project$Fps$Vertex,
-					A3(_elm_community$linear_algebra$Math_Vector3$vec3, 10, 10, -10),
-					A3(_elm_community$linear_algebra$Math_Vector3$vec3, 0, 0, 0)),
-				_1: A2(
-					_user$project$Fps$Vertex,
-					A3(_elm_community$linear_algebra$Math_Vector3$vec3, -10, -10, -10),
-					A3(_elm_community$linear_algebra$Math_Vector3$vec3, 0, 0, 0)),
-				_2: A2(
-					_user$project$Fps$Vertex,
-					A3(_elm_community$linear_algebra$Math_Vector3$vec3, 10, -10, -10),
-					A3(_elm_community$linear_algebra$Math_Vector3$vec3, 1.6039, 0.6039, 0.6118))
-			},
-			_1: {ctor: '[]'}
-		}
 	});
 var _user$project$Fps$ptToCube = F3(
 	function (p, s, col) {
@@ -344,12 +318,12 @@ var _user$project$Fps$map = A2(
 		return A3(
 			_user$project$Fps$ptToCube,
 			e,
-			3,
+			1.5,
 			A3(_elm_community$linear_algebra$Math_Vector3$vec3, 0.2, 0.5, 0.5));
 	},
 	A2(
 		_elm_lang$core$List$map,
-		_elm_community$linear_algebra$Math_Vector3$scale(8),
+		_elm_community$linear_algebra$Math_Vector3$scale(4),
 		_user$project$Fps$dotMap));
 var _user$project$Fps$view = function (_p4) {
 	var _p5 = _p4;
@@ -380,23 +354,9 @@ var _user$project$Fps$view = function (_p4) {
 				_elm_community$webgl$WebGL$entity,
 				_user$project$Fps$vertexShader,
 				_user$project$Fps$fragmentShader,
-				_elm_community$webgl$WebGL$triangles(
-					A3(
-						_user$project$Fps$ptToCube,
-						A3(_elm_community$linear_algebra$Math_Vector3$vec3, 10, 0, 10),
-						4,
-						A3(_elm_community$linear_algebra$Math_Vector3$vec3, 0.2, 0.2, 0.2))),
-				A2(_user$project$Fps$uniforms, _p6, _p5.angle / 2)),
-			_1: {
-				ctor: '::',
-				_0: A4(
-					_elm_community$webgl$WebGL$entity,
-					_user$project$Fps$vertexShader,
-					_user$project$Fps$fragmentShader,
-					_elm_community$webgl$WebGL$triangles(_user$project$Fps$map),
-					A2(_user$project$Fps$uniforms, _p6, 20)),
-				_1: {ctor: '[]'}
-			}
+				_elm_community$webgl$WebGL$triangles(_user$project$Fps$map),
+				A3(_user$project$Fps$uniforms, _p6, _elm_lang$core$Basics$pi / 2, _p5.position)),
+			_1: {ctor: '[]'}
 		});
 };
 var _user$project$Fps$Uniform = F3(
@@ -432,7 +392,7 @@ var _user$project$Fps$init = {
 	_0: {
 		size: A2(_elm_lang$window$Window$Size, 0, 0),
 		angle: 0,
-		position: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 0, 0, 0),
+		position: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 0, 0.3, 0),
 		pressedKeys: {ctor: '[]'}
 	},
 	_1: A2(_elm_lang$core$Task$perform, _user$project$Fps$Resize, _elm_lang$window$Window$size)
