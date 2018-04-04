@@ -145,13 +145,18 @@ var _user$project$Fps$update = F2(
 								_elm_community$linear_algebra$Math_Vector3$getZ(model.position) - (_elm_lang$core$Basics$cos(a) / 75))
 						}),
 					{ctor: '[]'});
-			default:
+			case 'KeyboardMsg':
 				var keys = A2(_ohanhi$keyboard_extra$Keyboard_Extra$update, _p3._0, model.pressedKeys);
-				return {
-					ctor: '_Tuple2',
-					_0: _elm_lang$core$Native_Utils.update(
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
 						model,
 						{pressedKeys: keys}),
+					{ctor: '[]'});
+			default:
+				return {
+					ctor: '_Tuple2',
+					_0: model,
 					_1: _user$project$Fps$requestPointerLock(
 						{ctor: '_Tuple0'})
 				};
@@ -371,6 +376,9 @@ var _user$project$Fps$Uniform = F3(
 var _user$project$Fps$Varying = function (a) {
 	return {vcolor: a};
 };
+var _user$project$Fps$Click = function (a) {
+	return {ctor: 'Click', _0: a};
+};
 var _user$project$Fps$KeyboardMsg = function (a) {
 	return {ctor: 'KeyboardMsg', _0: a};
 };
@@ -385,7 +393,11 @@ var _user$project$Fps$subscriptions = function (_p7) {
 			_1: {
 				ctor: '::',
 				_0: A2(_elm_lang$core$Platform_Sub$map, _user$project$Fps$KeyboardMsg, _ohanhi$keyboard_extra$Keyboard_Extra$subscriptions),
-				_1: {ctor: '[]'}
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$mouse$Mouse$clicks(_user$project$Fps$Click),
+					_1: {ctor: '[]'}
+				}
 			}
 		});
 };
