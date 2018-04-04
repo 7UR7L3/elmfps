@@ -1,4 +1,4 @@
-module Fps exposing (main)
+port module Fps exposing (main, requestPointerLock)
 
 import WebGL exposing (Mesh, Shader)
 import Math.Vector3 exposing (Vec3, vec3, add, scale, normalize, length, dot, getX, getY, getZ)
@@ -10,6 +10,10 @@ import Html exposing (Html)
 import Time exposing (Time)
 import Task
 import Keyboard.Extra exposing (Key(..), Direction(..))
+
+
+
+
 
 
 type Action
@@ -59,6 +63,23 @@ subscriptions _ =
         , Sub.map KeyboardMsg Keyboard.Extra.subscriptions
         ]
 
+
+
+
+-- thanks https://github.com/evancz/first-person-elm
+-- thanks https://guide.elm-lang.org/interop/javascript.html
+--port movement : Signal (Int, Int)
+--port isLocked : Signal Bool
+
+port requestPointerLock : () -> Cmd msg
+--port requestPointerLock =
+
+--port exitPointerLock : Signal ()
+--port exitPointerLock = 
+
+
+
+
 update : Action -> Model -> ( Model, Cmd Action )
 update action model =
     case action of
@@ -70,7 +91,7 @@ update action model =
                       position = if dir == NoDirection then model.position else vec3 ((getX model.position) + (sin a)/75) (getY model.position) ((getZ model.position) - (cos a)/75) } ! []
 
         KeyboardMsg keyMsg -> let keys = Keyboard.Extra.update keyMsg model.pressedKeys in
-            { model | pressedKeys = keys } ! []
+            ( { model | pressedKeys = keys }, requestPointerLock () )
 
 -- View
 

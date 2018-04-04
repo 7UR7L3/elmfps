@@ -113,6 +113,11 @@ var _user$project$Fps$uniforms = F3(
 				A3(_elm_community$linear_algebra$Math_Vector3$vec3, 0, 1, 0))
 		};
 	});
+var _user$project$Fps$requestPointerLock = _elm_lang$core$Native_Platform.outgoingPort(
+	'requestPointerLock',
+	function (v) {
+		return null;
+	});
 var _user$project$Fps$update = F2(
 	function (action, model) {
 		var _p3 = action;
@@ -142,12 +147,14 @@ var _user$project$Fps$update = F2(
 					{ctor: '[]'});
 			default:
 				var keys = A2(_ohanhi$keyboard_extra$Keyboard_Extra$update, _p3._0, model.pressedKeys);
-				return A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					_elm_lang$core$Native_Utils.update(
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
 						model,
 						{pressedKeys: keys}),
-					{ctor: '[]'});
+					_1: _user$project$Fps$requestPointerLock(
+						{ctor: '_Tuple0'})
+				};
 		}
 	});
 var _user$project$Fps$Model = F4(

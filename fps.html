@@ -20,8 +20,11 @@ html, body
 <script>
     var node = document.getElementById('main');
     var app = Elm.Fps.embed(node);
-    // Note: if your Elm module is named "MyThing.Root" you
-    // would call "Elm.MyThing.Root.embed(node)" instead.
+    
+    app.ports.requestPointerLock.subscribe( function()
+    {
+    	node.requestPointerLock();
+    } );
 </script>
 
 </body>
