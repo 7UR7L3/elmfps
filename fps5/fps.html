@@ -1,0 +1,35 @@
+<head>
+
+<style>
+
+html, body
+{
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="main"></div>
+<script src="fps.js"></script>
+<script>
+    var node = document.getElementById('main');
+    var app = Elm.Fps.embed(node);
+    
+    app.ports.requestPointerLock.subscribe( function()
+    {
+    	node.requestPointerLock();
+    } );
+
+    node.addEventListener( "mousemove", function( e )
+    {
+    	app.ports.mouseMove.send( [ e.movementX, e.movementY ] );
+    }, false );
+</script>
+
+</body>
