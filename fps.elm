@@ -2,7 +2,7 @@ port module Fps exposing (main, requestPointerLock)
 
 import WebGL exposing (Mesh, Shader)
 import Math.Vector3 exposing (Vec3, vec3, add, scale, normalize, length, dot, getX, getY, getZ)
-import Math.Matrix4 exposing (Mat4, makeRotate, mul, makeLookAt, makePerspective, inverseOrthonormal, transpose)
+import Math.Matrix4 exposing (Mat4, transform, makeRotate, mul, makeLookAt, makePerspective, inverseOrthonormal, transpose)
 import AnimationFrame
 import Window
 import Html.Attributes exposing (width, height, style)
@@ -90,9 +90,13 @@ update action model =
         Resize size ->
             { model | size = size } ! []
 
-        Animate elapsed -> let dir = Keyboard.Extra.wasdDirection model.pressedKeys in let a = directionToAngle dir in
+        Animate elapsed ->
+            let dir = Keyboard.Extra.wasdDirection model.pressedKeys in
+            let a = ( directionToAngle dir ) - ( atan2 (getX model.direction) (getZ model.direction) ) + pi in
             { model | angle = model.angle + a / 50,
-                      position = if dir == NoDirection then model.position else vec3 ((getX model.position) + (sin a)/75) (getY model.position) ((getZ model.position) - (cos a)/75) } ! []
+                      position =
+                        if dir == NoDirection then model.position
+                        else vec3 ((getX model.position) + (sin a)/75) (getY model.position) ((getZ model.position) - (cos a)/75) } ! []
 
         KeyboardMsg keyMsg -> let keys = Keyboard.Extra.update keyMsg model.pressedKeys in
             { model | pressedKeys = keys } ! []
@@ -101,7 +105,10 @@ update action model =
             ( model, requestPointerLock () )
 
         MouseMove ( dx, dy ) ->
-            { model | position = add model.position <| vec3 ((dx)/1000) ((0-dy)/1000) 0 } ! []
+            let pitched = transform ( makeRotate (-dx/1000) (vec3 0 1 0) ) model.direction in
+            let acrossvec = ( atan2 (getX model.direction) (getZ model.direction) ) - pi / 2 in
+            let yawed = transform ( makeRotate (-dy/1000) (vec3 (sin acrossvec) 0 (cos acrossvec)) ) pitched in
+            { model | direction = yawed } ! []
 
 -- View
 

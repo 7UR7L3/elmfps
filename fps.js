@@ -13335,7 +13335,10 @@ var _user$project$Fps$update = F2(
 					{ctor: '[]'});
 			case 'Animate':
 				var dir = _ohanhi$keyboard_extra$Keyboard_Extra$wasdDirection(model.pressedKeys);
-				var a = _user$project$Fps$directionToAngle(dir);
+				var a = (_user$project$Fps$directionToAngle(dir) - A2(
+					_elm_lang$core$Basics$atan2,
+					_elm_community$linear_algebra$Math_Vector3$getX(model.direction),
+					_elm_community$linear_algebra$Math_Vector3$getZ(model.direction))) + _elm_lang$core$Basics$pi;
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
@@ -13365,16 +13368,33 @@ var _user$project$Fps$update = F2(
 						{ctor: '_Tuple0'})
 				};
 			default:
+				var pitched = A2(
+					_elm_community$linear_algebra$Math_Matrix4$transform,
+					A2(
+						_elm_community$linear_algebra$Math_Matrix4$makeRotate,
+						(0 - _p3._0._0) / 1000,
+						A3(_elm_community$linear_algebra$Math_Vector3$vec3, 0, 1, 0)),
+					model.direction);
+				var acrossvec = A2(
+					_elm_lang$core$Basics$atan2,
+					_elm_community$linear_algebra$Math_Vector3$getX(model.direction),
+					_elm_community$linear_algebra$Math_Vector3$getZ(model.direction)) - (_elm_lang$core$Basics$pi / 2);
+				var yawed = A2(
+					_elm_community$linear_algebra$Math_Matrix4$transform,
+					A2(
+						_elm_community$linear_algebra$Math_Matrix4$makeRotate,
+						(0 - _p3._0._1) / 1000,
+						A3(
+							_elm_community$linear_algebra$Math_Vector3$vec3,
+							_elm_lang$core$Basics$sin(acrossvec),
+							0,
+							_elm_lang$core$Basics$cos(acrossvec))),
+					pitched);
 				return A2(
 					_elm_lang$core$Platform_Cmd_ops['!'],
 					_elm_lang$core$Native_Utils.update(
 						model,
-						{
-							position: A2(
-								_elm_community$linear_algebra$Math_Vector3$add,
-								model.position,
-								A3(_elm_community$linear_algebra$Math_Vector3$vec3, _p3._0._0 / 1000, (0 - _p3._0._1) / 1000, 0))
-						}),
+						{direction: yawed}),
 					{ctor: '[]'});
 		}
 	});
