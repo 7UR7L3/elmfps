@@ -25,6 +25,11 @@ html, body
     {
     	node.requestPointerLock();
     } );
+
+    node.addEventListener( "mousemove", function( e )
+    {
+    	app.ports.mouseMove.send( [ e.movementX, e.movementY ] );
+    }, false );
 </script>
 
 </body>

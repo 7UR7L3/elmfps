@@ -24,6 +24,7 @@ type alias Model =
     { size : Window.Size
     , angle : Float
     , position : Vec3
+    , direction : Vec3
     , pressedKeys : List Key
     }
 
@@ -48,6 +49,7 @@ init =
     ( { size = Window.Size 0 0
       , angle = 0
       , position = vec3 0 0.3 0
+      , direction = vec3 0 0 -1
       , pressedKeys = []
       }
     , Task.perform Resize Window.size
@@ -59,6 +61,7 @@ type Action
     | Animate Time
     | KeyboardMsg Keyboard.Extra.Msg
     | Click Mouse.Position
+    | MouseMove (Float, Float)
 
 
 
@@ -69,12 +72,16 @@ subscriptions _ =
         --, Window.resizes Resize -- don't capture this if you want to zoom in lol
         , Sub.map KeyboardMsg Keyboard.Extra.subscriptions
         , Mouse.clicks Click
+        , mouseMove MouseMove
         ]
 
 
 -- thanks https://github.com/evancz/first-person-elm
 -- thanks https://guide.elm-lang.org/interop/javascript.html
+-- thanks https://gist.github.com/groteck/e4cc180ac182436f31f1d709466df768
+-- thanks https://developer.mozilla.org/en-US/docs/Web/API/Element/requestPointerLock
 port requestPointerLock : () -> Cmd msg
+port mouseMove : ((Float, Float) -> msg) -> Sub msg
 
 
 update : Action -> Model -> ( Model, Cmd Action )
@@ -93,10 +100,13 @@ update action model =
         Click position ->
             ( model, requestPointerLock () )
 
+        MouseMove ( dx, dy ) ->
+            { model | position = add model.position <| vec3 ((dx)/1000) ((0-dy)/1000) 0 } ! []
+
 -- View
 
 view : Model -> Html Action
-view { size, angle, position, pressedKeys } =
+view { size, angle, position, direction, pressedKeys } =
     WebGL.toHtml
         [ width size.width
         , height size.height
@@ -107,7 +117,7 @@ view { size, angle, position, pressedKeys } =
             --WebGL.entity vertexShader fragmentShader blade (uniforms size (angle / 10 - angle)),
             --WebGL.entity vertexShader fragmentShader blade (uniforms size 20),
             --WebGL.entity vertexShader fragmentShader (WebGL.triangles ( ptToCube (vec3 10 0 10) 4 (vec3 0.2 0.2 0.2)) ) (uniforms size (angle/2) position),
-            WebGL.entity vertexShader fragmentShader (WebGL.triangles map) (uniforms size (pi/2) position)
+            WebGL.entity vertexShader fragmentShader (WebGL.triangles map) (uniforms size (pi/2) position direction)
         ]
 
 
@@ -116,11 +126,11 @@ view { size, angle, position, pressedKeys } =
 
 
 
-uniforms : Window.Size -> Float -> Vec3 -> Uniform
-uniforms { width, height } angle position =
+uniforms : Window.Size -> Float -> Vec3 -> Vec3 -> Uniform
+uniforms { width, height } angle position direction =
     { rotation = makeRotate angle (vec3 -1 0 0)
     , perspective = makePerspective 45 (toFloat width / toFloat height) 0.01 100
-    , camera = makeLookAt position (vec3 (getX position) (getY position) ((getZ position) - 1)) (vec3 0 1 0)
+    , camera = makeLookAt position (add position direction) (vec3 0 1 0)
     }
 
 
