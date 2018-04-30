@@ -1,57 +1,54 @@
-var _user$project$Fps$dotMap = {
-	ctor: '::',
-	_0: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 0, 0, 0),
-	_1: {
+var _user$project$Fps$base = F2(
+	function (n, m) {
+		return A2(
+			_elm_lang$core$List$concatMap,
+			function (em) {
+				return A2(
+					_elm_lang$core$List$map,
+					function (en) {
+						return A3(
+							_elm_community$linear_algebra$Math_Vector3$vec3,
+							_elm_lang$core$Basics$toFloat(en),
+							_elm_lang$core$Basics$toFloat(em),
+							-1);
+					},
+					A2(_elm_lang$core$List$range, 1, n));
+			},
+			A2(_elm_lang$core$List$range, 1, m));
+	});
+var _user$project$Fps$dotMap = A2(
+	_elm_lang$core$Basics_ops['++'],
+	{
 		ctor: '::',
-		_0: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 0, 1, 0),
+		_0: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 1, 1, 0),
 		_1: {
 			ctor: '::',
-			_0: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 0, 2, 0),
+			_0: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 7, 1, 0),
 			_1: {
 				ctor: '::',
-				_0: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 0, 3, 0),
+				_0: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 1, 23, 0),
 				_1: {
 					ctor: '::',
-					_0: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 1, 0, 0),
+					_0: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 7, 23, 0),
 					_1: {
 						ctor: '::',
-						_0: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 1, 1, 0),
+						_0: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 4, 12, 0),
 						_1: {
 							ctor: '::',
-							_0: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 1, 2, 0),
+							_0: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 3, 12, 0),
 							_1: {
 								ctor: '::',
-								_0: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 1, 3, 0),
+								_0: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 5, 12, 0),
 								_1: {
 									ctor: '::',
-									_0: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 2, 0, 0),
+									_0: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 4, 13, 0),
 									_1: {
 										ctor: '::',
-										_0: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 2, 1, 0),
+										_0: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 4, 11, 0),
 										_1: {
 											ctor: '::',
-											_0: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 2, 2, 0),
-											_1: {
-												ctor: '::',
-												_0: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 2, 3, 0),
-												_1: {
-													ctor: '::',
-													_0: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 1, 3, 1),
-													_1: {
-														ctor: '::',
-														_0: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 2, 2, 1),
-														_1: {
-															ctor: '::',
-															_0: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 2, 3, 1),
-															_1: {
-																ctor: '::',
-																_0: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 2, 3, 2),
-																_1: {ctor: '[]'}
-															}
-														}
-													}
-												}
-											}
+											_0: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 4, 12, 1),
+											_1: {ctor: '[]'}
 										}
 									}
 								}
@@ -61,8 +58,8 @@ var _user$project$Fps$dotMap = {
 				}
 			}
 		}
-	}
-};
+	},
+	A2(_user$project$Fps$base, 7, 23));
 var _user$project$Fps$directionToAngle = function (direction) {
 	var _p0 = direction;
 	switch (_p0.ctor) {
@@ -86,7 +83,7 @@ var _user$project$Fps$directionToAngle = function (direction) {
 			return 0;
 	}
 };
-var _user$project$Fps$fragmentShader = {'src': '\n  precision mediump float;\n  varying vec3 vcolor;\n  void main () {\n      gl_FragColor = vec4(vcolor, 0.25);\n  }\n'};
+var _user$project$Fps$fragmentShader = {'src': '\n  precision mediump float;\n  varying vec3 vcolor;\n  void main () {\n      gl_FragColor = vec4(vcolor, 0.2);\n  }\n'};
 var _user$project$Fps$vertexShader = {'src': '\n  attribute vec3 position;\n  attribute vec3 color;\n  uniform mat4 perspective;\n  uniform mat4 camera;\n  uniform mat4 rotation;\n  varying vec3 vcolor;\n  void main () {\n      gl_Position = perspective * camera * rotation * vec4((0.05 * position) , 1.0);\n      vcolor = color;\n  }\n'};
 var _user$project$Fps$uniforms = F4(
 	function (_p1, angle, position, direction) {
@@ -370,12 +367,12 @@ var _user$project$Fps$map = A2(
 		return A3(
 			_user$project$Fps$ptToCube,
 			e,
-			1.5,
+			2.5,
 			A3(_elm_community$linear_algebra$Math_Vector3$vec3, 0.2, 0.5, 0.5));
 	},
 	A2(
 		_elm_lang$core$List$map,
-		_elm_community$linear_algebra$Math_Vector3$scale(4),
+		_elm_community$linear_algebra$Math_Vector3$scale(6),
 		_user$project$Fps$dotMap));
 var _user$project$Fps$view = function (_p4) {
 	var _p5 = _p4;
@@ -468,7 +465,7 @@ var _user$project$Fps$init = {
 	_0: {
 		size: A2(_elm_lang$window$Window$Size, 0, 0),
 		angle: 0,
-		position: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 0, 0.3, 0),
+		position: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 0, 0.15, 0),
 		direction: A3(_elm_community$linear_algebra$Math_Vector3$vec3, 0, 0, -1),
 		pressedKeys: {ctor: '[]'}
 	},

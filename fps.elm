@@ -50,7 +50,7 @@ init : ( Model, Cmd Action )
 init =
     ( { size = Window.Size 0 0
       , angle = 0
-      , position = vec3 0 0.3 0
+      , position = vec3 0 0.15 0
       , direction = vec3 0 0 -1
       , pressedKeys = []
       }
@@ -199,7 +199,7 @@ fragmentShader =
   precision mediump float;
   varying vec3 vcolor;
   void main () {
-      gl_FragColor = vec4(vcolor, 0.25);
+      gl_FragColor = vec4(vcolor, 0.2);
   }
 |]
 
@@ -240,25 +240,30 @@ directionToAngle direction =
 
 
 
-dotMap =
-    [
-        vec3 0 0 0,
-        vec3 0 1 0,
-        vec3 0 2 0,
-        vec3 0 3 0,
-        vec3 1 0 0,
-        vec3 1 1 0,
-        vec3 1 2 0,
-        vec3 1 3 0,
-        vec3 2 0 0,
-        vec3 2 1 0,
-        vec3 2 2 0,
-        vec3 2 3 0,
-        vec3 1 3 1,
-        vec3 2 2 1,
-        vec3 2 3 1,
-        vec3 2 3 2
-    ]
+--dotMap =
+--    [
+--        vec3 0 0 0,
+--        vec3 0 1 0,
+--        vec3 0 2 0,
+--        vec3 0 3 0,
+--        vec3 1 0 0,
+--        vec3 1 1 0,
+--        vec3 1 2 0,
+--        vec3 1 3 0,
+--        vec3 2 0 0,
+--        vec3 2 1 0,
+--        vec3 2 2 0,
+--        vec3 2 3 0,
+--        vec3 1 3 1,
+--        vec3 2 2 1,
+--        vec3 2 3 1,
+--        vec3 2 3 2
+--    ]
+
+base = \n m -> List.concatMap ( \em -> List.map ( \en -> vec3 ( toFloat en ) ( toFloat em ) -1 ) ( List.range 1 n ) ) ( List.range 1 m )
+
+dotMap = [ vec3 1 1 0, vec3 7 1 0, vec3 1 23 0, vec3 7 23 0,
+           vec3 4 12 0, vec3 3 12 0, vec3 5 12 0, vec3 4 13 0, vec3 4 11 0, vec3 4 12 1 ] ++ ( base 7 23 )
 
 ptToCube p s col =
     let fll = vec3 ( (getX p) - s ) ( (getY p) - s ) ( (getZ p) - s ) in
@@ -291,5 +296,5 @@ ptToCube p s col =
 
 map = List.concatMap
                 ( \e ->
-                    ptToCube e 1.5 (vec3 0.2 0.5 0.5) )
-                ( List.map ( scale 4 ) dotMap )
+                    ptToCube e 2.5 (vec3 0.2 0.5 0.5) )
+                ( List.map ( scale 6 ) dotMap )
