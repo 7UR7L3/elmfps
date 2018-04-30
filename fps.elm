@@ -1,8 +1,6 @@
 port module Fps exposing (main, requestPointerLock)
 
 import WebGL exposing (Mesh, Shader)
-import WebGL.Settings.Blend as Blend
-import WebGL.Settings.DepthTest as DepthTest
 import Math.Vector3 exposing (Vec3, vec3, add, scale, normalize, length, dot, getX, getY, getZ)
 import Math.Matrix4 exposing (Mat4, transform, makeRotate, mul, makeLookAt, makePerspective, inverseOrthonormal, transpose)
 import AnimationFrame
@@ -126,10 +124,7 @@ view { size, angle, position, direction, pressedKeys } =
             --WebGL.entity vertexShader fragmentShader blade (uniforms size (angle / 10 - angle)),
             --WebGL.entity vertexShader fragmentShader blade (uniforms size 20),
             --WebGL.entity vertexShader fragmentShader (WebGL.triangles ( ptToCube (vec3 10 0 10) 4 (vec3 0.2 0.2 0.2)) ) (uniforms size (angle/2) position),
-            
-            --WebGL.entity vertexShader fragmentShader (WebGL.triangles map) (uniforms size (pi/2) position direction)
-            WebGL.entityWith [ Blend.add Blend.srcAlpha Blend.oneMinusSrcAlpha, DepthTest.always { write = True, near = 0, far = 1 } ]
-                vertexShader fragmentShader (WebGL.triangles map) (uniforms size (pi/2) position direction)
+            WebGL.entity vertexShader fragmentShader (WebGL.triangles map) (uniforms size (pi/2) position direction)
         ]
 
 
@@ -199,7 +194,7 @@ fragmentShader =
   precision mediump float;
   varying vec3 vcolor;
   void main () {
-      gl_FragColor = vec4(vcolor, 0.25);
+      gl_FragColor = vec4(vcolor, 1.0);
   }
 |]
 

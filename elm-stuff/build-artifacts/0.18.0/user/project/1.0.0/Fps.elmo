@@ -86,7 +86,7 @@ var _user$project$Fps$directionToAngle = function (direction) {
 			return 0;
 	}
 };
-var _user$project$Fps$fragmentShader = {'src': '\n  precision mediump float;\n  varying vec3 vcolor;\n  void main () {\n      gl_FragColor = vec4(vcolor, 0.25);\n  }\n'};
+var _user$project$Fps$fragmentShader = {'src': '\n  precision mediump float;\n  varying vec3 vcolor;\n  void main () {\n      gl_FragColor = vec4(vcolor, 1.0);\n  }\n'};
 var _user$project$Fps$vertexShader = {'src': '\n  attribute vec3 position;\n  attribute vec3 color;\n  uniform mat4 perspective;\n  uniform mat4 camera;\n  uniform mat4 rotation;\n  varying vec3 vcolor;\n  void main () {\n      gl_Position = perspective * camera * rotation * vec4((0.05 * position) , 1.0);\n      vcolor = color;\n  }\n'};
 var _user$project$Fps$uniforms = F4(
 	function (_p1, angle, position, direction) {
@@ -402,18 +402,8 @@ var _user$project$Fps$view = function (_p4) {
 		},
 		{
 			ctor: '::',
-			_0: A5(
-				_elm_community$webgl$WebGL$entityWith,
-				{
-					ctor: '::',
-					_0: A2(_elm_community$webgl$WebGL_Settings_Blend$add, _elm_community$webgl$WebGL_Settings_Blend$srcAlpha, _elm_community$webgl$WebGL_Settings_Blend$oneMinusSrcAlpha),
-					_1: {
-						ctor: '::',
-						_0: _elm_community$webgl$WebGL_Settings_DepthTest$always(
-							{write: true, near: 0, far: 1}),
-						_1: {ctor: '[]'}
-					}
-				},
+			_0: A4(
+				_elm_community$webgl$WebGL$entity,
 				_user$project$Fps$vertexShader,
 				_user$project$Fps$fragmentShader,
 				_elm_community$webgl$WebGL$triangles(_user$project$Fps$map),
