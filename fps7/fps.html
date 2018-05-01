@@ -10,6 +10,23 @@ html, body
     background-color: #36393E;
 }
 
+#main
+{
+    position: absolute;
+}
+
+#crosshair
+{
+    background-color: transparent;
+    color: white;
+    font-size: 32px;
+    height: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 </style>
 
 </head>
@@ -17,6 +34,7 @@ html, body
 <body>
 
 <div id="main"></div>
+<div id="crosshair">+</div>
 <script src="fps.js"></script>
 <script>
     var node = document.getElementById('main');
