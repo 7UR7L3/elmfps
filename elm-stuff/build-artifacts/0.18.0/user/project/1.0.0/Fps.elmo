@@ -134,11 +134,14 @@ var _user$project$Fps$update = F2(
 						model,
 						{
 							angle: model.angle + (a / 50),
-							position: _elm_lang$core$Native_Utils.eq(dir, _ohanhi$keyboard_extra$Keyboard_Extra$NoDirection) ? model.position : A3(
-								_elm_community$linear_algebra$Math_Vector3$vec3,
-								_elm_community$linear_algebra$Math_Vector3$getX(model.position) + (_elm_lang$core$Basics$sin(a) / 75),
-								_elm_community$linear_algebra$Math_Vector3$getY(model.position),
-								_elm_community$linear_algebra$Math_Vector3$getZ(model.position) - (_elm_lang$core$Basics$cos(a) / 75))
+							position: function () {
+								var movSpeed = A2(_elm_lang$core$List$member, _ohanhi$keyboard_extra$Keyboard_Extra$Shift, model.pressedKeys) ? 2 : 1;
+								return _elm_lang$core$Native_Utils.eq(dir, _ohanhi$keyboard_extra$Keyboard_Extra$NoDirection) ? model.position : A3(
+									_elm_community$linear_algebra$Math_Vector3$vec3,
+									_elm_community$linear_algebra$Math_Vector3$getX(model.position) + ((_elm_lang$core$Basics$sin(a) * movSpeed) / 75),
+									_elm_community$linear_algebra$Math_Vector3$getY(model.position),
+									_elm_community$linear_algebra$Math_Vector3$getZ(model.position) - ((_elm_lang$core$Basics$cos(a) * movSpeed) / 75));
+							}()
 						}),
 					{ctor: '[]'});
 			case 'KeyboardMsg':

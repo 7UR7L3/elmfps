@@ -97,8 +97,9 @@ update action model =
             let a = ( directionToAngle dir ) - ( atan2 (getX model.direction) (getZ model.direction) ) + pi in
             { model | angle = model.angle + a / 50,
                       position =
+                        let movSpeed = if List.member Shift model.pressedKeys then 2 else 1 in
                         if dir == NoDirection then model.position
-                        else vec3 ((getX model.position) + (sin a)/75) (getY model.position) ((getZ model.position) - (cos a)/75) } ! []
+                        else vec3 ((getX model.position) + (sin a)*movSpeed/75) (getY model.position) ((getZ model.position) - (cos a)*movSpeed/75) } ! []
 
         KeyboardMsg keyMsg -> let keys = Keyboard.Extra.update keyMsg model.pressedKeys in
             { model | pressedKeys = keys } ! []
