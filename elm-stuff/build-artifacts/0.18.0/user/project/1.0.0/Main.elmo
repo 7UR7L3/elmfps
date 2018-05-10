@@ -1,0 +1,288 @@
+var _user$project$Main$viewMessage = function (msg) {
+	return _elm_lang$core$Native_Utils.eq(msg, ' ') ? A2(
+		_elm_lang$html$Html$div,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$style(
+				{
+					ctor: '::',
+					_0: {ctor: '_Tuple2', _0: 'color', _1: 'white'},
+					_1: {ctor: '[]'}
+				}),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text('space'),
+			_1: {ctor: '[]'}
+		}) : A2(
+		_elm_lang$html$Html$div,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text(msg),
+			_1: {ctor: '[]'}
+		});
+};
+var _user$project$Main$view = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$div,
+				{ctor: '[]'},
+				A2(_elm_lang$core$List$map, _user$project$Main$viewMessage, model.message)),
+			_1: {ctor: '[]'}
+		});
+};
+var _user$project$Main$getPlayers = function (p) {
+	var _p0 = p;
+	if (_p0.ctor === '[]') {
+		return {
+			ctor: '::',
+			_0: '',
+			_1: {ctor: '[]'}
+		};
+	} else {
+		if (_p0._1.ctor === '[]') {
+			var _p1 = _p0._0;
+			return {
+				ctor: '::',
+				_0: A2(_elm_lang$core$String$append, _p1.name, ': '),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$core$String$append,
+						'Position: ',
+						_elm_lang$core$Basics$toString(_p1.position)),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$core$String$append,
+							'Health: ',
+							_elm_lang$core$Basics$toString(_p1.health)),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$core$String$append,
+								'Score: ',
+								_elm_lang$core$Basics$toString(_p1.score)),
+							_1: {ctor: '[]'}
+						}
+					}
+				}
+			};
+		} else {
+			var _p2 = _p0._0;
+			return A2(
+				_elm_lang$core$List$append,
+				{
+					ctor: '::',
+					_0: A2(_elm_lang$core$String$append, _p2.name, ': '),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$core$String$append,
+							'Position: ',
+							_elm_lang$core$Basics$toString(_p2.position)),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$core$String$append,
+								'Health: ',
+								_elm_lang$core$Basics$toString(_p2.health)),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$core$String$append,
+									'Score: ',
+									_elm_lang$core$Basics$toString(_p2.score)),
+								_1: {
+									ctor: '::',
+									_0: ' ',
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					}
+				},
+				_user$project$Main$getPlayers(_p0._1));
+		}
+	}
+};
+var _user$project$Main$getMessage = function (m) {
+	var _p3 = m;
+	return A2(
+		_elm_lang$core$List$append,
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$core$String$append,
+				'Time: ',
+				_elm_lang$core$Basics$toString(_p3.time)),
+			_1: {
+				ctor: '::',
+				_0: '       ',
+				_1: {
+					ctor: '::',
+					_0: ' ',
+					_1: {ctor: '[]'}
+				}
+			}
+		},
+		_user$project$Main$getPlayers(_p3.players));
+};
+var _user$project$Main$Player = F4(
+	function (a, b, c, d) {
+		return {name: a, position: b, health: c, score: d};
+	});
+var _user$project$Main$Model = F3(
+	function (a, b, c) {
+		return {time: a, players: b, message: c};
+	});
+var _user$project$Main$init = function () {
+	var pls = {
+		ctor: '::',
+		_0: A4(
+			_user$project$Main$Player,
+			'Player 1',
+			{
+				ctor: '::',
+				_0: 0,
+				_1: {
+					ctor: '::',
+					_0: 1,
+					_1: {
+						ctor: '::',
+						_0: 2,
+						_1: {ctor: '[]'}
+					}
+				}
+			},
+			1000,
+			0),
+		_1: {
+			ctor: '::',
+			_0: A4(
+				_user$project$Main$Player,
+				'Player 2',
+				{
+					ctor: '::',
+					_0: -20,
+					_1: {
+						ctor: '::',
+						_0: 45.6,
+						_1: {
+							ctor: '::',
+							_0: -73.2,
+							_1: {ctor: '[]'}
+						}
+					}
+				},
+				750,
+				2),
+			_1: {
+				ctor: '::',
+				_0: A4(
+					_user$project$Main$Player,
+					'Player 3',
+					{
+						ctor: '::',
+						_0: 34,
+						_1: {
+							ctor: '::',
+							_0: 2314,
+							_1: {
+								ctor: '::',
+								_0: -2435,
+								_1: {ctor: '[]'}
+							}
+						}
+					},
+					500,
+					12),
+				_1: {
+					ctor: '::',
+					_0: A4(
+						_user$project$Main$Player,
+						'Frank',
+						{
+							ctor: '::',
+							_0: 6,
+							_1: {
+								ctor: '::',
+								_0: 66,
+								_1: {
+									ctor: '::',
+									_0: -666,
+									_1: {ctor: '[]'}
+								}
+							}
+						},
+						12,
+						6666),
+					_1: {ctor: '[]'}
+				}
+			}
+		}
+	};
+	return {
+		ctor: '_Tuple2',
+		_0: A3(
+			_user$project$Main$Model,
+			0,
+			pls,
+			{
+				ctor: '::',
+				_0: 'Start!',
+				_1: {ctor: '[]'}
+			}),
+		_1: _elm_lang$core$Platform_Cmd$none
+	};
+}();
+var _user$project$Main$update = F2(
+	function (msg, model) {
+		var _p4 = {ctor: '_Tuple2', _0: msg, _1: model};
+		if (_p4._0.ctor === 'Send') {
+			return {
+				ctor: '_Tuple2',
+				_0: A3(_user$project$Main$Model, _p4._0._0, _p4._1.players, _p4._1.message),
+				_1: A2(
+					_elm_lang$websocket$WebSocket$send,
+					'ws://echo.websocket.org',
+					_elm_lang$core$Basics$toString(_p4._1.time))
+			};
+		} else {
+			return {
+				ctor: '_Tuple2',
+				_0: A3(
+					_user$project$Main$Model,
+					_p4._1.time,
+					_p4._1.players,
+					_user$project$Main$getMessage(model)),
+				_1: _elm_lang$core$Platform_Cmd$none
+			};
+		}
+	});
+var _user$project$Main$NewMessage = function (a) {
+	return {ctor: 'NewMessage', _0: a};
+};
+var _user$project$Main$Send = function (a) {
+	return {ctor: 'Send', _0: a};
+};
+var _user$project$Main$subscriptions = function (model) {
+	return _elm_lang$core$Platform_Sub$batch(
+		{
+			ctor: '::',
+			_0: A2(_elm_lang$websocket$WebSocket$listen, 'ws://echo.websocket.org', _user$project$Main$NewMessage),
+			_1: {
+				ctor: '::',
+				_0: A2(_elm_lang$core$Time$every, _elm_lang$core$Time$millisecond, _user$project$Main$Send),
+				_1: {ctor: '[]'}
+			}
+		});
+};
+var _user$project$Main$main = _elm_lang$html$Html$program(
+	{init: _user$project$Main$init, view: _user$project$Main$view, update: _user$project$Main$update, subscriptions: _user$project$Main$subscriptions})();

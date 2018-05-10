@@ -1,5 +1,7 @@
 port module Fps exposing (main, requestPointerLock)
 
+import WebSocket
+import Time exposing(Time, second)
 import WebGL exposing (Mesh, Shader)
 import WebGL.Settings.Blend as Blend
 import WebGL.Settings.DepthTest as DepthTest
@@ -14,20 +16,50 @@ import Task
 import Keyboard.Extra exposing (Key(..), Direction(..))
 import Mouse
 
+--Imported from networking
+type alias Player =
+  { number: Int
+  , name: String
+  , position: List(Float)
+  , health: Int
+  , score: Int
+  }
 
+pToString : List(Player) -> Int -> String
+pToString p i = case p of
+  first :: rest ->
+    if i == 0 then case first of
+      {number, name, position, health, score} ->
+        String.append (String.append (String.append (String.append (String.append (String.append (String.append (String.append (toString number) ";") name) ";") (toString position)) ";") (toString health)) ";") (toString score)
+    else
+      pToString rest (i-1)
+  _ -> "fail"
 
+psToString: List(Player) -> String
+psToString p = case p of
+  [] -> ""
+  first :: rest ->
+    String.append (String.append (pToString p 0) "\n") (psToString rest)
 
+--Model imported from networking
+--type alias Model =
+--  { time: String
+--  , which: Int
+--  , players: List (Player)
+--  , message: List (String)
+--  }
 
-
-
-
-
+--Update model
 type alias Model =
-    { size : Window.Size
+    { which: Int
+    , players: List (Player)
+    , message: List (String)
+    , size : Window.Size
     , angle : Float
     , position : Vec3
     , direction : Vec3
     , pressedKeys : List Key
+    , connected : Bool
     }
 
 
@@ -48,11 +80,16 @@ main =
 
 init : ( Model, Cmd Action )
 init =
-    ( { size = Window.Size 0 0
+    ( { which = 0
+      , players = [Player 0 "Player 1" [0,0.15,0] 1000 0]
+      --Rest of example players ,Player 1 "Player 2"  [-20,45.6,-73.2] 750 2,Player 2 "Player 3" [34,2314,-2435] 500 12, Player 3 "Frank" [6,66,-666] 12 6666]
+      , message = ["Start!"]
+      , size = Window.Size 0 0
       , angle = 0
       , position = vec3 0 0.15 0
       , direction = vec3 0 0 -1
       , pressedKeys = []
+      , connected = False
       }
     , Task.perform Resize Window.size
     )
@@ -64,6 +101,8 @@ type Action
     | KeyboardMsg Keyboard.Extra.Msg
     | Click Mouse.Position
     | MouseMove (Float, Float)
+    | Send Time
+    | NewMessage String
 
 
 
@@ -75,6 +114,9 @@ subscriptions _ =
         , Sub.map KeyboardMsg Keyboard.Extra.subscriptions
         , Mouse.clicks Click
         , mouseMove MouseMove
+        --Updated from networking
+        , WebSocket.listen "ws://localhost:3000" NewMessage
+        , Time.every Time.second Send
         ]
 
 
@@ -88,18 +130,52 @@ port mouseMove : ((Float, Float) -> msg) -> Sub msg
 
 update : Action -> Model -> ( Model, Cmd Action )
 update action model =
+    --let throw3 = Debug.log "test2" "test2" in
     case action of
+        NewMessage mesg -> case model of
+            { which, players, message, size, angle, position, direction, pressedKeys, connected } ->
+              let throw = Debug.log "message" mesg in
+              let ap = (updatePlayers players (String.split "?" mesg)) in
+              let ps = getPlayers players in
+              let plsprint = String.concat ps in
+              --let throw = Debug.log "Whjatever" plsprint in
+              case String.uncons mesg of
+                Just (first, rest) -> if first == '+' then let whichh = Result.withDefault 0 (String.toInt rest) in
+                  let throw = Debug.log "Whichh" (psToString ap) in
+                  (Model whichh (List.append players [Player whichh "Player 1" [0,0.15,0] 1000 0]) (getMessage2 model (String.split "?" mesg)) size angle position direction pressedKeys True, Cmd.none)
+                  else
+                  --let throw = Debug.log "Fail" "Fail" in
+                    let throw = Debug.log "Before before" (psToString ap) in
+                    (Model which ap (getMessage2 model (String.split "?" mesg)) size angle position direction pressedKeys connected, Cmd.none)
+
+                _ ->
+                  --let throw = Debug.log "Fail2" "Fail2" in
+                  (Model which ap (getMessage2 model (String.split "?" mesg)) size angle position direction pressedKeys connected, Cmd.none)
+            --_ -> (model,Cmd.none)S
+
         Resize size ->
             { model | size = size } ! []
 
         Animate elapsed ->
+          --let throw = Debug.log "Conneced" model.connected in
+          if model.connected then
             let dir = Keyboard.Extra.wasdDirection model.pressedKeys in
             let a = ( directionToAngle dir ) - ( atan2 (getX model.direction) (getZ model.direction) ) + pi in
-            { model | angle = model.angle + a / 50,
+            let m = {model | angle = model.angle + a / 50,
                       position =
                         let movSpeed = if List.member Shift model.pressedKeys then 2 else 1 in
                         if dir == NoDirection then model.position
-                        else vec3 ((getX model.position) + (sin a)*movSpeed/75) (getY model.position) ((getZ model.position) - (cos a)*movSpeed/75) } ! []
+                        else vec3 ((getX model.position) + (sin a)*movSpeed/75) (getY model.position) ((getZ model.position) - (cos a)*movSpeed/75)} in
+            --Updated from networking
+            let plsprint2 = psToString model.players in
+            let throw2 = Debug.log "before" plsprint2 in
+            let p = updatePPos model.which m.position model.players in
+            let plsprint = psToString p in
+            let throw2 = Debug.log "after" plsprint in
+            let tosend = pToString p m.which in
+            let throw2 = Debug.log "tosend" tosend in
+            ({m | players = p}, WebSocket.send "ws://localhost:3000" tosend)
+          else (model, Cmd.none)
 
         KeyboardMsg keyMsg -> let keys = Keyboard.Extra.update keyMsg model.pressedKeys in
             { model | pressedKeys = keys } ! []
@@ -112,26 +188,46 @@ update action model =
             let acrossvec = ( atan2 (getX model.direction) (getZ model.direction) ) - pi / 2 in
             let yawed = transform ( makeRotate (-dy/1000) (vec3 (sin acrossvec) 0 (cos acrossvec)) ) pitched in
             { model | direction = yawed } ! []
+        _ -> (model, Cmd.none)
 
+--Helperfunction for networking stuff
+updatePPos: Int -> Vec3 -> List(Player) -> List(Player)
+updatePPos i p ps = case ps of
+    [] -> []
+    ({number, name, position, health, score}) :: rest -> if i == 0 then 
+      --let print = Debug.log "Got to player" p in
+      (Player number name [(getX p),(getY p),(getZ p)] health score) :: rest else (Player number name position health score) :: (updatePPos (i-1) p rest)
 -- View
 
 view : Model -> Html Action
-view { size, angle, position, direction, pressedKeys } =
+--view { size, angle, position, direction, pressedKeys } =
+view { which, players, message, size, angle, position, direction, pressedKeys, connected } =
     WebGL.toHtml
         [ width size.width
         , height size.height
         , style [ ( "display", "block" ) ]
         ]
-        [
+        --[
             --WebGL.entity vertexShader fragmentShader copter (uniforms size (angle / 10)),
             --WebGL.entity vertexShader fragmentShader blade (uniforms size (angle / 10 - angle)),
             --WebGL.entity vertexShader fragmentShader blade (uniforms size 20),
             --WebGL.entity vertexShader fragmentShader (WebGL.triangles ( ptToCube (vec3 10 0 10) 4 (vec3 0.2 0.2 0.2)) ) (uniforms size (angle/2) position),
             
             --WebGL.entity vertexShader fragmentShader (WebGL.triangles map) (uniforms size (pi/2) position direction)
-            WebGL.entityWith [ Blend.add Blend.srcAlpha Blend.oneMinusSrcAlpha, DepthTest.always { write = True, near = 0, far = 1 } ]
-                vertexShader fragmentShader (WebGL.triangles map) (uniforms size (pi/2) position direction)
-        ]
+        (
+        WebGL.entityWith [ Blend.add Blend.srcAlpha Blend.oneMinusSrcAlpha, DepthTest.always { write = True, near = 0, far = 1 } ]
+          vertexShader fragmentShader (WebGL.triangles map) (uniforms size (pi/2) position direction)
+        ::
+          List.map (\p ->
+            let pos = case p.position of
+              a::b::c::rest -> vec3 (a*10) (-10*c) (b*10)
+              _ -> Debug.log "ohno" ( vec3 0 0 0 )
+            in
+              WebGL.entityWith [ Blend.add Blend.srcAlpha Blend.oneMinusSrcAlpha, DepthTest.always { write = True, near = 0, far = 1 } ]
+                vertexShader fragmentShader (WebGL.triangles ( ptToCube pos 2.5 (vec3 0.5 0.5 0.5) )) (uniforms size (pi/2) position direction)
+            ) players
+        --]
+        )
 
 
 
@@ -299,3 +395,80 @@ map = List.concatMap
                 ( \e ->
                     ptToCube e 2.5 (vec3 0.2 0.5 0.5) )
                 ( List.map ( scale 6 ) dotMap )
+getMessage2 : Model -> List (String) -> List (String)
+getMessage2 m s = case (m, s) of
+  (_, []) -> getMessage m
+  ({ which, players, message, size, angle, position, direction, pressedKeys, connected },_) -> getMessage (Model which (getMessageH players s) message size angle position direction pressedKeys connected)
+      
+updatePlayers: List(Player) -> List(String) -> List(Player)
+updatePlayers p s = case s of
+  first :: rest -> let l = String.split ";" first in
+    case l of
+      a :: (b :: (c :: (d :: (e::[])))) ->
+        let throw2 = Debug.log "correct" (String.split "," (String.slice 1 ((String.length c)-1) c)) in --(List.map (Result.withDefault 0 << String.toFloat) (String.split (String.slice 1 ((String.length c)-1) c) "," )) in
+        (Player (Result.withDefault 0 (String.toInt a)) b (List.map (Result.withDefault 0 << String.toFloat) (String.split "," (String.slice 1 ((String.length c)-1) c))) (Result.withDefault 0 <| String.toInt d) (Result.withDefault 0 <| String.toInt e)) :: (updatePlayers p rest) 
+      _ -> []
+        --let throw2 = Debug.log "incorrect" first in p
+  _ ->[]
+
+
+getMessageH : List(Player) -> List(String) -> List(Player)
+getMessageH p s = case (p, s) of
+  (_,[]) -> p
+  (firstp :: restp, "" :: rests) -> firstp :: (getMessageH restp rests)
+  ([], firsts :: rests) ->
+    if firsts == "" then getMessageH [] rests else
+    if firsts == "something" then p else
+    let l = String.split ";" firsts in
+    case l of
+      a :: (b :: (c :: (d :: (e::[])))) ->
+        (Player (Result.withDefault 0 (String.toInt a)) b (List.map (Result.withDefault 0 << String.toFloat) (String.split (String.slice 1 (String.length c) c) "," )) (Result.withDefault 0 <| String.toInt d) (Result.withDefault 0 <| String.toInt e)) :: (getMessageH [] rests) 
+      _ -> []
+  (_ :: restp, firsts :: rests) ->
+    if firsts == "something" then p else
+    let l = String.split ";" firsts in
+    --case l of
+    --  a :: (b :: (c :: (d :: (e :: [])))) ->
+    --    (Player -1 d [-0.1] -1 -1) :: (getMessageH restp rests)
+    --  _ -> (Player -1 "fail" [-0.1] -1 -1) :: (getMessageH restp rests)
+    case l of
+      a :: (b :: (c :: (d :: (e::[])))) ->
+        --(Player (Result.withDefault 0 (String.toInt a)) (String.join "||" (String.split "," (String.slice 1 ((String.length c)-1) c) )) (List.map (Result.withDefault 0 << String.toFloat) (String.split "," (String.slice 1 ((String.length c)-1) c) )) (Result.withDefault 0 <| String.toInt d) (Result.withDefault 0 <| String.toInt e)) :: (getMessageH restp rests) 
+        (Player (Result.withDefault 0 (String.toInt a)) b (List.map (Result.withDefault 0 << String.toFloat) (String.split "," (String.slice 1 ((String.length c)-1) c) )) (Result.withDefault 0 <| String.toInt d) (Result.withDefault 0 <| String.toInt e)) :: (getMessageH restp rests) 
+      _ -> []
+
+
+getMessage : Model -> List (String)
+getMessage m = case m of
+  { which, players, message, size, angle, position, direction, pressedKeys } ->
+    List.append [String.append "Player " (toString which), " "] (getPlayers players)
+
+getPlayers : List (Player) -> List(String)
+getPlayers p = case p of
+  [] -> [""]
+  only :: [] -> [String.append only.name (": "), String.append "Position: " (toString only.position), String.append "Health: " (toString only.health), String.append "Score: " (toString only.score)]
+  first :: rest -> List.append [String.append first.name (": "), String.append "Position: " (toString first.position), String.append "Health: " (toString first.health), String.append "Score: " (toString first.score), " "] (getPlayers rest)
+
+-- SUBSCRIPTIONS
+
+--subscriptions : Model -> Sub Msg
+--subscriptions model =
+--  Sub.batch
+--  [WebSocket.listen "ws://localhost:3000" NewMessage, Time.every Time.second Send]
+
+---- VIEW
+
+--view : Model -> Html Msg
+--view model =
+--  div []
+--    [ div [] (List.map viewMessage model.message)
+--    --, button [onClick (Send 2)] [text "Send"]
+--    ]
+
+--getTime:Float
+
+
+--viewMessage : String -> Html msg
+--viewMessage msg =
+--  if msg == " " then div [style [("color","white")]][text "space"]
+--  else div [] [ text msg ]
