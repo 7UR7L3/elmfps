@@ -1,6 +1,17 @@
 elmfps
 ---
 
+VIDEO DEMO: [https://vimeo.com/268923388](https://vimeo.com/268923388)
+- Demo of networking encorporation with the main game.
+- Rendering is somewhat disalligned with the networking but it is infinitely better than it was.
+- Currently the server must be ran locally but could probably be coaxed onto the real person internet with Hamachi or port forwarding or something.
+
+---
+
+Our commit history was purged in a tragic accident because I don't know what "force push" and "unrecoverable" mean. This repository should still hold the up to date code. Our apologies. If there's a way to like get dat commit history back lemme know.
+
+---
+
 Now, you might ask yourself, why in the world would someone try to do something so stupid, and we ask ourselves that question every day.
 
 If you're like lolwat, [this will probably be useful](https://htmlpreview.github.io/).
