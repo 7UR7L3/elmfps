@@ -8,7 +8,7 @@ VIDEO DEMO: [https://vimeo.com/268923388](https://vimeo.com/268923388)
 
 ---
 
-Our commit history was purged in a tragic accident because I don't know what "force push" and "unrecoverable" mean. This repository should still hold the up to date code. Our apologies. If there's a way to like get dat commit history back lemme know.
+~~Our commit history was purged in a tragic accident because I don't know what "force push" and "unrecoverable" mean. This repository should still hold the up to date code. Our apologies. If there's a way to like get dat commit history back lemme know.~~ oh nvm ty git reflog <3
 
 ---
 
